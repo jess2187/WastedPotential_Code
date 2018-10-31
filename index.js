@@ -110,10 +110,22 @@ function addEvent(id, data){
 	});
 }
 
+function getEvents(id){
+	MongoClient.connect(url, function(e, db){
+		var dbd = db.db("events")
+		if (e) throw e;
+  		dbd.collection(id).find().toArray(function(err, events){
+  			if(err) throw err;
+  			db.close();
+  			return events;
+  		});
+	})
+}
+
 addEvent('1', {'date': Date(), 'description': 'this is an event', 'title': 'this is my title', 'type': 0, 'notifications': null})
 
 app.get('/sign_up', function(req, res){
-	res.sendFile(path.join(__dirname + '/Signuppage.html'));
+	res.sendFile(path.join(__dirname + '/session_html/sign_up.html'));
 })
 
 app.post('/sign_up', function(req, res){
@@ -141,14 +153,14 @@ app.post('/sign_up', function(req, res){
 
 app.get('/calendar', function(req, res){
 	if (req.session && req.session.id) {
-		res.sendFile(path.join(__dirname + '/calendar.html'));
+		res.sendFile(path.join(__dirname + '/JanuaryMonthlyView.html'));
 	} else {
 		res.redirect('/sign_in')
 	}
 })
 
 app.get('/sign_in', function(req, res){
-	res.sendFile(path.join(__dirname + '/Signinpage.html'));
+	res.sendFile(path.join(__dirname + '/session_html/login.html'));
 })
 
 app.post('/sign_in', function(req, res){
@@ -160,6 +172,14 @@ app.post('/sign_in', function(req, res){
 			req.session.userId = user._id
 			res.redirect('/profile')
 		})
+	}
+})
+
+app.post('/new_event', function(req, res){
+	if (req.session && req.session.id) {
+		console.log(req.body)
+	} else {
+		res.redirect('/sign_in')
 	}
 })
 
