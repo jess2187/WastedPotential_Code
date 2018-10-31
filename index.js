@@ -8,7 +8,7 @@ var ObjectId = require('mongodb').ObjectId;
 var mongoose = require('mongoose');
 var path = require('path');
 var bcrypt = require('bcrypt')
-mongoose.connect('mongodb://localhost/temp');
+mongoose.connect('mongodb://localhost/user');
 var url = "mongodb://localhost:27017/";
 
 console.log('hey hi the server started')
@@ -122,6 +122,41 @@ function getEvents(id){
 	})
 }
 
+function addAssignment(id, data){
+	MongoClient.connect(url, function(err, db) {
+		var dbd = db.db("assignments")
+		if (err) throw err;
+  		dbd.collection(id).insertOne(data, function(e, res){ if (e) throw e; });
+  		db.close();
+	});
+}
+
+function getAssignments(id){
+	MongoClient.connect(url, function(err, db){
+		var dbd = db.db("assignments")
+		if (err) throw err;
+  		dbd.collection(id).find().toArray(function(err, a){
+  			if(err) throw err;
+  			db.close();
+  			return a;
+  		});
+	})
+}
+
+function getPreferences(id){
+	MongoClient.connect(url, function(err, db){
+		var dbd = db.db("preferences")
+		if (err) throw err;
+  		dbd.collection(id).find().toArray(function(err, p){
+  			if(err) throw err;
+  			db.close();
+  			return p;
+  		});
+	})
+}
+
+
+
 addEvent('1', {'date': Date(), 'description': 'this is an event', 'title': 'this is my title', 'type': 0, 'notifications': null})
 
 app.get('/sign_up', function(req, res){
@@ -139,15 +174,29 @@ app.post('/sign_up', function(req, res){
 	  }
 	  //use schema.create to insert data into the db
 	  User.create(userData, function (err, user) {
-	  	console.log(user)
 	    if (err) {
-	      console.log(err)
-	      return
+	      return err
 	    } else {
 	      req.session.userId = user._id
 	      return res.redirect('/profile');
 	    }
 	  });
+	}
+})
+
+app.get('/events', function(req, res){
+	if (req.session && req.session.id) {
+		res.send(getEvents(req.session.id));
+	} else {
+		res.redirect('/sign_in')
+	}
+})
+
+app.get('/assignments', function(req, res){
+	if (req.session && req.session.id) {
+		res.send(getAssignments(req.session.id));
+	} else {
+		res.redirect('/sign_in')
 	}
 })
 
@@ -170,12 +219,12 @@ app.post('/sign_in', function(req, res){
 			console.log(err)
 			console.log(user)
 			req.session.userId = user._id
-			res.redirect('/profile')
+			res.redirect('/calendar')
 		})
 	}
 })
 
-app.post('/new_event', function(req, res){
+app.post('/insert', function(req, res){
 	if (req.session && req.session.id) {
 		console.log(req.body)
 	} else {
