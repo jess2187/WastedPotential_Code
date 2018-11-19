@@ -148,10 +148,16 @@
             <span>Charts</span></a>
         </li>
         
-        <li class="nav-item">
-          <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Tables</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="events.html">Events</a>
+            <a class="dropdown-item" href="Assignments.html">Assignments</a>
+            <a class="dropdown-item" href="AssignmentWorktimes.html">Assignment Work Times</a>
+          </div>
         </li>
       </ul>
 
@@ -209,14 +215,19 @@
                         </div>
 
                         <div class="form-group">
-                          <label for="name">Notes:</label>
+                          <label for="name">Description/Notes:</label>
                           <input type="name" class="form-control" id="name" placeholder="Describe your assignment or add a link to an assignment post">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="name">Time Needed to Complete</label>
+                          <input type="name" class="form-control" id="name" placeholder="Enter how many hours are needed to complete this assignment">
                         </div>
 
                       </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Add</button>
                   </div>
                 </div>
               </div>
