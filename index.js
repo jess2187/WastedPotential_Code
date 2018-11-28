@@ -2,8 +2,8 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
 
-var MongoClient = require('mongodb').MongoClient;
 var session = require('express-session')
+var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 var mongoose = require('mongoose');
 var path = require('path');
@@ -70,23 +70,6 @@ module.exports = User;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-/* DB schema
-DB: user
-Collection: users
-	Docuement: id, email - email, password - hash
-
-Db: prefences
-Collection: id
-	Document: studytime, updates,
-
-DB: events
-Collection: id
-	Document: due - date, description - str, title - str, , repeating, notifications
-
-DB: assignments
-Collection: id 
-	Document: completed - boolean, due - date, repeating, description - str, title - str, notifications, numhours - how long they ahve to work on it, worktime - free time assigned to working on this 
-*/
 
 function determineOptimalTimes(id){
 	/*
@@ -155,32 +138,36 @@ function getPreferences(id){
 	})
 }
 
+function addUser(data){
+	if (data.email &&
+	  data.password) {
+	  var userData = {
+	    email: data.email,
+	    password: data.password,
+	    passwordConf: data.passwordConf
+	  }
+	  User.create(userData, function (err, user) {
+	    if (err) {
+	      return -1
+	    } else {
+	      return user._id
+	    }
+	  });
+	}
+}
 
-
-addEvent('1', {'date': Date(), 'description': 'this is an event', 'title': 'this is my title', 'type': 0, 'notifications': null})
 
 app.get('/sign_up', function(req, res){
 	res.sendFile(path.join(__dirname + '/session_html/sign_up.html'));
 })
 
 app.post('/sign_up', function(req, res){
-	console.log(req.body)
-	if (req.body.email &&
-	  req.body.password) {
-	  var userData = {
-	    email: req.body.email,
-	    password: req.body.password,
-	    passwordConf: req.body.passwordConf
-	  }
-	  //use schema.create to insert data into the db
-	  User.create(userData, function (err, user) {
-	    if (err) {
-	      return err
-	    } else {
-	      req.session.userId = user._id
-	      return res.redirect('/profile');
-	    }
-	  });
+	userId = addUser(req.body)
+	if(userId != -1){
+		res.rediret('/sign_up')
+	}else{
+		req.session.userId = userId
+		res.redirect('/profile')
 	}
 })
 
