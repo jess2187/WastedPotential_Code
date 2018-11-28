@@ -2,7 +2,7 @@
 <html lang="en">
 
   <head>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -67,7 +67,7 @@
                 </div>
               </div>
             </div>
-            <a class="btn btn-primary btn-block" href="login.html">Register</a>
+            <button class="btn btn-primary btn-block">Register</button>
           </form>
           <div class="text-center">
             <a class="d-block small mt-3" href="login.html">Login Page</a>
@@ -83,6 +83,20 @@
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <script>
+      $(function(){
+        $("button").click(function(){console.log('clicked')
+          data = {
+            email:$('#inputEmail').val(),
+            password:$('#inputPassword').val(),
+            passwordConf: $('#confirmPassword').val(),
+            firstName: $('#firstName').val(),
+            lastName: $('#lastName').val() } 
+          $.post("/sign_up", data)
+        });
+      });
+    </script>
 
   </body>
 

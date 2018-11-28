@@ -33,6 +33,14 @@ var UserSchema = new mongoose.Schema({
   passwordConf: {
     type: String,
     required: true,
+  },
+  firstName: {
+  	type: String,
+  	required: true
+  },
+  lastName: {
+  	type: String,
+  	required: true
   }
 });
 UserSchema.pre('save', function (next) {
@@ -46,9 +54,9 @@ UserSchema.pre('save', function (next) {
   })
 });
 UserSchema.statics.authenticate = function (email, password, callback) {
-	 		User.findOne({ email: email })
-	    	.exec(function (err, user) {
-		      if (err) {
+	User.findOne({ email: email })
+	    .exec(function (err, user) {
+		    if (err) {
 		        return callback(err)
 		      } else if (!user) {
 		        var err = new Error('User not found.');
@@ -62,8 +70,8 @@ UserSchema.statics.authenticate = function (email, password, callback) {
 		          return callback();
 		        }
 		      })
-	    	});
-		}
+	});
+}
 var User = mongoose.model('User', UserSchema);
 module.exports = User;
 
@@ -126,6 +134,7 @@ function getAssignments(id){
 	})
 }
 
+
 function getPreferences(id){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("preferences")
@@ -144,7 +153,9 @@ function addUser(data){
 	  var userData = {
 	    email: data.email,
 	    password: data.password,
-	    passwordConf: data.passwordConf
+	    passwordConf: data.passwordConf,
+	    firstName: data.firstName,
+	    lastName: data.lastName
 	  }
 	  User.create(userData, function (err, user) {
 	    if (err) {
@@ -156,47 +167,18 @@ function addUser(data){
 	}
 }
 
+app.use('/website', express.static('website'))
 
-app.get('/sign_up', function(req, res){
-	res.sendFile(path.join(__dirname + '/session_html/sign_up.html'));
-})
-
-app.post('/sign_up', function(req, res){
+app.post('/sign_up', function(req, res){console.log('sign_up')
+	console.log(req.body)
 	userId = addUser(req.body)
+	console.log(userId)
 	if(userId != -1){
-		res.rediret('/sign_up')
+		res.redirect('/sign_up')
 	}else{
 		req.session.userId = userId
-		res.redirect('/profile')
+		res.redirect('/website/index.html')
 	}
-})
-
-app.get('/events', function(req, res){
-	if (req.session && req.session.id) {
-		res.send(getEvents(req.session.id));
-	} else {
-		res.redirect('/sign_in')
-	}
-})
-
-app.get('/assignments', function(req, res){
-	if (req.session && req.session.id) {
-		res.send(getAssignments(req.session.id));
-	} else {
-		res.redirect('/sign_in')
-	}
-})
-
-app.get('/calendar', function(req, res){
-	if (req.session && req.session.id) {
-		res.sendFile(path.join(__dirname + '/JanuaryMonthlyView.html'));
-	} else {
-		res.redirect('/sign_in')
-	}
-})
-
-app.get('/sign_in', function(req, res){
-	res.sendFile(path.join(__dirname + '/session_html/login.html'));
 })
 
 app.post('/sign_in', function(req, res){
@@ -205,8 +187,13 @@ app.post('/sign_in', function(req, res){
 	  	UserSchema.statics.authenticate(req.body.email, req.body.password, function(err, user){
 			console.log(err)
 			console.log(user)
-			req.session.userId = user._id
-			res.redirect('/calendar')
+			if(err || !user){
+				//try again logic
+				res.redirect('/website/login')
+			}else{
+				req.session.userId = user._id
+				res.redirect('/website/index.html')
+			}
 		})
 	}
 })
