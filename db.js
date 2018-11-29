@@ -129,7 +129,7 @@ function addUser(data){
 }
 
 function populateDatabase(){
-	user1 = addUser({email: 'arman.aydemir@colorado.edu', password:'woah', passwordConf:'woah'})
+	user1 = addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'arman.aydemir@colorado.edu', password:'woah', passwordConf:'woah'})
 	addAssignment(user1, {completed:false, due: new Date(), repeating:'', description:'test assignments', title:'test title',
 			notifications: null, numhours:5, worktime:null})
 	addEvent(user1, {start:  new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), end: new Date(today.getFullYear(), today.getMonth(), today.getDate()+8),

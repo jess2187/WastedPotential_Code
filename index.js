@@ -30,10 +30,6 @@ var UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  passwordConf: {
-    type: String,
-    required: true,
-  },
   firstName: {
   	type: String,
   	required: true
@@ -96,7 +92,7 @@ function addEvent(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("events")
 		if (err) throw err;
-  		dbd.collection(id).insertOne(data, function(e, res){ if (e) throw e; });
+  		dbd.collection(id.toString()).insertOne(data, function(e, res){ if (e) throw e; });
   		db.close();
 	});
 }
@@ -105,7 +101,7 @@ function getEvents(id){
 	MongoClient.connect(url, function(e, db){
 		var dbd = db.db("events")
 		if (e) throw e;
-  		dbd.collection(id).find().toArray(function(err, events){
+  		dbd.collection(id.toString()).find().toArray(function(err, events){
   			if(err) throw err;
   			db.close();
   			return events;
@@ -117,7 +113,7 @@ function addAssignment(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("assignments")
 		if (err) throw err;
-  		dbd.collection(id).insertOne(data, function(e, res){ if (e) throw e; });
+  		dbd.collection(id.toString()).insertOne(data, function(e, res){ if (e) throw e; });
   		db.close();
 	});
 }
@@ -126,7 +122,7 @@ function getAssignments(id){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("assignments")
 		if (err) throw err;
-  		dbd.collection(id).find().toArray(function(err, a){
+  		dbd.collection(id.toString()).find().toArray(function(err, a){
   			if(err) throw err;
   			db.close();
   			return a;
@@ -139,7 +135,7 @@ function getPreferences(id){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("preferences")
 		if (err) throw err;
-  		dbd.collection(id).find().toArray(function(err, p){
+  		dbd.collection(id.toString()).find().toArray(function(err, p){
   			if(err) throw err;
   			db.close();
   			return p;
@@ -153,7 +149,6 @@ function addUser(data){
 	  var userData = {
 	    email: data.email,
 	    password: data.password,
-	    passwordConf: data.passwordConf,
 	    firstName: data.firstName,
 	    lastName: data.lastName
 	  }
@@ -169,43 +164,47 @@ function addUser(data){
 
 app.use('/website', express.static('website'))
 
-app.post('/sign_up', function(req, res){console.log('sign_up')
-	console.log(req.body)
-	userId = addUser(req.body)
-	console.log(userId)
-	if(userId != -1){
-		res.redirect('/sign_up')
-	}else{
-		req.session.userId = userId
-		res.redirect('/website/index.html')
-	}
-})
 
-app.post('/sign_in', function(req, res){
-	if (req.body.email && req.body.password) {
-		console.log(req.body)
-	  	UserSchema.statics.authenticate(req.body.email, req.body.password, function(err, user){
-			console.log(err)
-			console.log(user)
-			if(err || !user){
-				//try again logic
-				res.redirect('/website/login')
-			}else{
-				req.session.userId = user._id
-				res.redirect('/website/index.html')
-			}
-		})
-	}
-})
-
-app.post('/insert', function(req, res){
+app.get('/assignments', function(req, res){
 	if (req.session && req.session.id) {
 		console.log(req.body)
+		console.log(getAssignments(req.session.userId))
 	} else {
 		res.redirect('/sign_in')
 	}
 })
 
+app.get('/add_assignment', function(req,res){
+	if (req.session && req.session.id) {
+		console.log(req.body)
+		addAssignment(req.session.userId, req.body)
+	} else {
+		res.redirect('/sign_in')
+	}
+})
+
+app.post('/sign_up', function(req, res){console.log('sign_up')
+	console.log(req.body)
+	userId = addUser(req.body)
+	console.log(userId)
+	
+	if(userId != -1){
+		console.log('worked')
+		req.session.userId = userId
+	}
+})
+
+app.post('/sign_in', function(req, res){ console.log('sign_in')
+	if (req.body.email && req.body.password) {
+		console.log(req.body)
+	  	UserSchema.statics.authenticate(req.body.email, req.body.password, function(err, user){
+			if(!(err || !user)){
+				console.log('worked')
+				req.session.userId = user._id
+			}
+		})
+	}
+})
 
 
 app.get('/logout', function(req, res, next) {
@@ -220,8 +219,6 @@ app.get('/logout', function(req, res, next) {
     });
   }
 });
-
-
 
 
 var server = app.listen(8000, function () {
