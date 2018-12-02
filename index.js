@@ -118,14 +118,14 @@ function addAssignment(id, data){
 	});
 }
 
-function getAssignments(id){
+function getAssignments(id, callback){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("assignments")
 		if (err) throw err;
-  		dbd.collection(id.toString()).find().toArray(function(err, a){
+  		dbd.collection(id).find().toArray(function(err, a){
   			if(err) throw err;
   			db.close();
-  			return a;
+  			callback(a);
   		});
 	})
 }
@@ -165,18 +165,23 @@ function addUser(data){
 app.use('/website', express.static('website'))
 
 
-app.get('/assignments', function(req, res){
-	if (req.session && req.session.id) {
-		console.log(req.body)
-		console.log(getAssignments(req.session.userId))
+app.get('/assignments', function(req, res){console.log('assignments')
+	if (req.session && req.session.id && req.session.userId) {
+		getAssignments(req.session.userId.toString(), function(assignments){
+			res.send(assignments)
+		})
 	} else {
-		res.redirect('/sign_in')
+		res.send('not today')
 	}
 })
 
+
+//app.get('/return_values', function(req, res){
+// 	res.end({data: getAssignments("5bff50cda47bb10edc148beb"))
+// })
+
 app.get('/add_assignment', function(req,res){
-	if (req.session && req.session.id) {
-		console.log(req.body)
+	if (req.session && req.session.id && req.session.userId) {
 		addAssignment(req.session.userId, req.body)
 	} else {
 		res.redirect('/sign_in')
@@ -184,25 +189,26 @@ app.get('/add_assignment', function(req,res){
 })
 
 app.post('/sign_up', function(req, res){console.log('sign_up')
-	console.log(req.body)
 	userId = addUser(req.body)
-	console.log(userId)
-	
 	if(userId != -1){
-		console.log('worked')
+		console.log('sign up worked')
 		req.session.userId = userId
 	}
 })
 
 app.post('/sign_in', function(req, res){ console.log('sign_in')
 	if (req.body.email && req.body.password) {
-		console.log(req.body)
 	  	UserSchema.statics.authenticate(req.body.email, req.body.password, function(err, user){
 			if(!(err || !user)){
-				console.log('worked')
+				console.log('sign in worked')
 				req.session.userId = user._id
+				res.redirect('/website/index.html')
+			}else{
+				res.redirect('/website/login.html')
 			}
 		})
+	}else{
+		res.redirect('/website/login.html')
 	}
 })
 
@@ -214,7 +220,7 @@ app.get('/logout', function(req, res, next) {
       if(err) {
         return next(err);
       } else {
-        return res.redirect('/');
+        return res.redirect('/website/login.html');
       }
     });
   }
@@ -225,6 +231,14 @@ var server = app.listen(8000, function () {
     console.log("Listening on port %s...", server.address().port);
 });
 
+function populateDatabase(){
+	var today = new Date()
+	//user1 = addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'arman.aydemir@colorado.edu', password:'woah', passwordConf:'woah'})
+	addAssignment("5bff50cda47bb10edc148beb", {completed:false, due: today, repeating:'', description:'test assignments', title:'test title',
+			notifications: null, numhours:5, worktime:null}) //user is yell@yell.com with password yell
+	addAssignment("5bff50cda47bb10edc148beb", {completed:false, due:  new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), repeating:'', description:'test assignments 2', title:'test title 2',
+			notifications: null, numhours:7, worktime:null})
+}
 
 
 
