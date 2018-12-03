@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Tables</title>
+    <title>Student Calender</title>
 
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -22,14 +22,19 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
-
+  <style> 
+      #buttonsinline{
+        display:inline-block;
+        /**other codes**/
+      }
+  </style>
   </head>
 
   <body id="page-top">
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="index.html">Student Calendar</a>
+      <a class="navbar-brand mr-1" href="index.html">Student Calender</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -90,6 +95,7 @@
 
     <div id="wrapper">
 
+
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
 
@@ -139,6 +145,12 @@
           </div>
         </li>
         
+        <li class="nav-item">
+          <a class="nav-link" href="charts.html">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Charts</span></a>
+        </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
@@ -159,69 +171,55 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <a href="#">Dashboard</a>
+              <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Tables</li>
+            <li class="breadcrumb-item active">Calendar</li>
           </ol>
 
-          <!-- DataTables Example -->
+
+          <!-- Calendar Card-->
           <div class="card mb-3">
-            <div class="card-header">
-              <i class="fas fa-table"></i>
-              Assignments and Events</div>
+            <!-- <div class="card-header">
+              <i class="fas fa-chart-area"></i>  This creates the icon next to the word
+              Calendar</div> -->
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Due Date</th>
-                      <th>Class</th>
-                      <th>Assignment</th>
-                      <th>Assignment Descripiton/Notes</th>
-                      <th>%Assignment is Worth(Priority)</th>
-                      <th>Completion %</th>
-                      <th>Work Hours Left</th>
-                      <th>Work Hours Total</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Due Date</th>
-                      <th>Class</th>
-                      <th>Assignment</th>
-                      <th>Assignment Descripiton/Notes</th>
-                      <th>%Assignment is Worth(Priority)</th>
-                      <th>Completion %</th>
-                      <th>Work Hours Left</th>
-                      <th>Work Hours Total</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>12/09/2018</td>
-                      <td>CSCI 2400</td>
-                      <td>Shell Lab</td>
-                      <td>Fuck this</td>
-                      <td>10%</td>
-                      <td>-99%</td>
-                      <td>100,000,500</td>
-                      <td>100,000,000</td>
-                    </tr>
-                    <tr>
-                      <td>12/05/2018</td>
-                      <td>CSCI 2824</td>
-                      <td>Discrete Hw</td>
-                      <td>sadness</td>
-                      <td>3%</td>
-                      <td>10%</td>
-                      <td>1</td>
-                      <td>10</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <h4 style="text-align:center">Calendar View</h4>
+              <div class="btn-group-sm float-right">
+                <form action="calendar_daily.html" style="display:inline-block">
+                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Daily</button>
+                </form>
+                <form action="calendar_weekly.html" style="display:inline-block">
+                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Weekly</button>
+                </form>
+                <form action="calendar_monthly.html" style="display:inline-block">
+                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Monthly</button>
+                </form>
               </div>
+              
+              <br><br>
+              <table style="width:100%; border: 1px solid black;">
+                <tr>
+                  <th>Times</th>
+                  <th>Activities</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+              </table>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
           </div>
 
         </div>
@@ -231,7 +229,7 @@
         <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright © Your Website 2018</span>
+              <span>Created By: Jessica, Austin, Joe, Obaid, Sky, and Arman</span>
             </div>
           </div>
         </footer>
@@ -274,6 +272,7 @@
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Page level plugin JavaScript-->
+    <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/datatables/jquery.dataTables.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
@@ -282,6 +281,7 @@
 
     <!-- Demo scripts for this page-->
     <script src="js/demo/datatables-demo.js"></script>
+    <script src="js/demo/chart-area-demo.js"></script>
 
   </body>
 

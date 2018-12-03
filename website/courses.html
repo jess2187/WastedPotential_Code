@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Tables</title>
+    <title>Student Calender</title>
 
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="index.html">Student Calendar</a>
+      <a class="navbar-brand mr-1" href="index.html">Student Calender</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -90,7 +90,8 @@
 
     <div id="wrapper">
 
-       <!-- Sidebar -->
+
+      <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
 
         <li class="nav-item active">
@@ -138,7 +139,12 @@
             <a class="dropdown-item" href="blank.html">Blank Page</a>
           </div>
         </li>
-
+        
+        <li class="nav-item">
+          <a class="nav-link" href="charts.html">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Charts</span></a>
+        </li>
         
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -160,111 +166,186 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <a href="#">Dashboard</a>
+              <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Tables</li>
+            <li class="breadcrumb-item active">[ClassName]</li>
           </ol>
 
-          <!-- DataTables Example -->
+          <!-- TODO: Make each page a different course the user  -->
+
+          <!-- Current Assignments Card-->
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fas fa-table"></i>
-              Events
-              <button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#myModal">Add Event</button>
-              </div>
+			<i class="fas fa-file-alt"></i>              
+				Assignments 
+			  <!-- Trigger the modal with a button -->
+              	<button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#myModal">Add Assignment</button> </div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Event Name</th>
-                      <th>Description</th>
-                      <th>Notification Prefernce</th>
-                      <th>Weekly Repeating</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Event Name</th>
-                      <th>Description</th>
-                      <th>Notification Prefernce</th>
-                      <th>Weekly Repeating</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>12/09/2018</td>
-                      <td>12:00-14:00</td>
-                      <td>Software Developement Lecture</td>
-                      <td>Not worth</td>
-                      <td>Email and In app</td>
-                      <td>MWF</td>
-                    </tr>
-                    <tr>
-                      <td>12/01/2018</td>
-                      <td>10:00-1:00</td>
-                      <td>Computer Systems Lecture</td>
-                      <td>UGH</td>
-                      <td>In app</td>
-                      <td>no</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            <!-- Modal (Add Assignment Popup) -->
-            <div class="modal fade" id="myModal" role="dialog">
-              <div class="modal-dialog modal-lg">
-                <form action="/add_assignment">
-                <div class="modal-content"> <!-- TODO: make this actually add a class  -->
-                  <div class="modal-header">
-                      <h4 class="modal-title">Add Event</h4>
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                      
-                        <div class="form-group">
-                          <label for="name">Assignment Name:</label>
-                          <input type="name" class="form-control" id="name">
-                        </div>
+              <ul>
+              	<h5>This Week: </h5> <!-- TODO: make these links to actual assignments added in  -->
+                <li><div class="panel-group">
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h6 class="panel-title">
+					        <a data-toggle="collapse" href="#collapse1">Homework #1</a>
+					      </h6>
+					    </div>
+					    <div id="collapse1" class="panel-collapse collapse">
+					      <div class="panel-body">Due Date</div>
+					      <div class="panel-footer">Notes</div>
+					    </div>
+					  </div>
+					</div>
+				</li> 
+                <li><div class="panel-group">
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h6 class="panel-title">
+					        <a data-toggle="collapse" href="#collapse2">Homework #2</a>
+					      </h6>
+					    </div>
+					    <div id="collapse2" class="panel-collapse collapse">
+					      <div class="panel-body">Due Date</div>
+					      <div class="panel-footer">Notes</div>
+					    </div>
+					  </div>
+					</div></li>
+                <h5>Upcoming: </h5>
+                <li>
+	                <div class="panel-group">
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h6 class="panel-title">
+					        <a data-toggle="collapse" href="#collapse3">Homework #3</a>
+					      </h6>
+					    </div>
+					    <div id="collapse3" class="panel-collapse collapse">
+					      <div class="panel-body">Due Date</div>
+					      <div class="panel-footer">Notes</div>
+					    </div>
+					  </div>
+					</div>
+                </li>
+              </ul>
+				
+				  
+				  
 
-                        <div class="form-group">
-                          <label for="date">Due Date:</label>
-                          <input type="date" class="form-control" id="date" placeholder="MM/DD/YY">
-                        </div>
+				  <!-- Modal -->
+				  <div class="modal fade" id="myModal" role="dialog">
+				    <div class="modal-dialog modal-lg">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          	<h4 class="modal-title">Add Assignment</h4>
+				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+				          	<form action="/action_page.php">
+							  <div class="form-group">
+							    <label for="name">Assignment Name:</label>
+							    <input type="name" class="form-control" id="name">
+							  </div>
 
-                        <div class="form-group">
-                          <label for="radio">Courses:</label>
-                          <label class="radio-inline"><input type="radio" name="optradio">Software Development</label>
-                          <label class="radio-inline"><input type="radio" name="optradio">Computer Systems</label>
-                          <label class="radio-inline"><input type="radio" name="optradio">Linear Algebra</label>
-                        </div>
+							  <div class="form-group">
+							    <label for="date">Due Date:</label>
+							    <input type="date" class="form-control" id="date" placeholder="MM/DD/YY">
+							  </div>
 
-                        <div class="form-group">
-                          <label for="name">Description/Notes:</label>
-                          <input type="name" class="form-control" id="notes" placeholder="Describe your assignment or add a link to an assignment post">
-                        </div>
+							  <div class="form-group">
+							    <label for="name">Notes:</label>
+							    <input type="name" class="form-control" id="name" placeholder="Describe your assignment or add a link to an assignment post">
+							  </div>
 
-                        <div class="form-group">
-                          <label for="name">Time Needed to Complete</label>
-                          <input type="name" class="form-control" id="time" placeholder="Enter how many hours are needed to complete this assignment">
-                        </div>
-
-                      
-                  </div>
-                  <div class="modal-footer">
-                    <input type="submit" class="btn btn-default" data-dismiss="modal" value="Add"></input>
-                  </div>
-                </div>
-                </form>
-              </div>
+							</form>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
             </div>
           </div>
+
+           <!-- Upcoming Tests Card-->
+          <div class="card mb-3">
+            <div class="card-header">
+			<i class="fas fa-file-alt"></i>              
+				Exams 
+			  <!-- Trigger the modal with a button -->
+              	<button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#myModal">Add Exam</button> </div>
+            <div class="card-body">
+              <ul> 								<!-- TODO: make these links to actual assignments added in  -->
+                <li><div class="panel-group">
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h6 class="panel-title">
+					        <a data-toggle="collapse" href="#collapse4">Database Exam</a>
+					      </h6>
+					    </div>
+					    <div id="collapse4" class="panel-collapse collapse">
+					      <div class="panel-body">Date</div>
+					      <div class="panel-footer">Notes</div>
+					    </div>
+					  </div>
+					</div>
+				</li> 
+                <li><div class="panel-group">
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h6 class="panel-title">
+					        <a data-toggle="collapse" href="#collapse5">HTML Exam</a>
+					      </h6>
+					    </div>
+					    <div id="collapse5" class="panel-collapse collapse">
+					      <div class="panel-body">Date</div>
+					      <div class="panel-footer">Notes</div>
+					    </div>
+					  </div>
+					</div>
+				</li>
+              </ul>
+				
+				  
+				  
+
+				  <!-- Modal -->
+				  <div class="modal fade" id="myModal" role="dialog">
+				    <div class="modal-dialog modal-lg">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          	<h4 class="modal-title">Add Assignment</h4>
+				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+				          	<form action="/action_page.php">
+							  <div class="form-group">
+							    <label for="name">Assignment Name:</label>
+							    <input type="name" class="form-control" id="name">
+							  </div>
+
+							  <div class="form-group">
+							    <label for="date">Due Date:</label>
+							    <input type="date" class="form-control" id="date" placeholder="MM/DD/YY">
+							  </div>
+
+							  <div class="form-group">
+							    <label for="name">Notes:</label>
+							    <input type="name" class="form-control" id="name" placeholder="Describe your assignment or add a link to an assignment post">
+							  </div>
+
+							</form>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+            </div>
+          </div>
+
+          
 
         </div>
         <!-- /.container-fluid -->
@@ -273,7 +354,7 @@
         <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright © Your Website 2018</span>
+              <span>Created By: Jessica, Austin, Joe, Obaid, Sky, and Arman</span>
             </div>
           </div>
         </footer>
@@ -316,6 +397,7 @@
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Page level plugin JavaScript-->
+    <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/datatables/jquery.dataTables.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
@@ -324,6 +406,7 @@
 
     <!-- Demo scripts for this page-->
     <script src="js/demo/datatables-demo.js"></script>
+    <script src="js/demo/chart-area-demo.js"></script>
 
   </body>
 
