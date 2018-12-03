@@ -209,14 +209,14 @@
                   <th>Saturday</th>
                 </tr>
                 <tr>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th>
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
                 </tr>
                 <tr>
                   <th>1</th>
@@ -336,6 +336,18 @@
       </div>
     </div>
 
+  <script>
+      $(function(){
+        $.ajax({url: "/assignments", success: function(result){
+            console.log('incoming assignments')
+            console.log(result)
+            for (var i = 0; i <  result.length(); i++) {
+                document.getElementById(result[i].due.getDay())esult[i].due.getDay().innerHTML = result[i];
+            } 
+          }});
+    });
+    </script>
+    
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
