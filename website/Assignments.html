@@ -107,7 +107,21 @@
           </a>
         </li>
 
-        <li class="nav-item dropdown">
+        <li class="nav-item">
+          <a class="nav-link" href="assignments.html">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Assignments</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="events.html">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Events</span>
+          </a>
+        </li>
+
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-book"></i>
             <span>Courses</span>
@@ -120,7 +134,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="courses.html">Add Course</a>
           </div>
-        </li>
+        </li> -->
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -170,11 +184,13 @@
             <li class="breadcrumb-item active">Tables</li>
           </ol>
 
-          <!-- DataTables Example -->
+          <!-- Assignment Table -->
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-table"></i>
-              Assignments and Events</div>
+              Assignments
+              <button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#myModal">Add Assignment</button>
+              </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -226,13 +242,58 @@
                   </tbody>
                 </table>
               </div>
+              <!-- Modal (Add Assignment Popup) -->
+            <div class="modal fade" id="myModal" role="dialog">
+              <div class="modal-dialog modal-lg">
+                <form action="/add_assignment">
+                <div class="modal-content"> <!-- TODO: make this actually add a class  -->
+                  <div class="modal-header">
+                      <h4 class="modal-title">Add Assignment</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                      
+                        <div class="form-group">
+                          <label for="name">Assignment Name:</label>
+                          <input type="name" class="form-control" id="name">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="date">Due Date:</label>
+                          <input type="date" class="form-control" id="date" placeholder="MM/DD/YY">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="radio">Courses:</label>
+                          <label class="radio-inline"><input type="radio" name="optradio">Software Development</label>
+                          <label class="radio-inline"><input type="radio" name="optradio">Computer Systems</label>
+                          <label class="radio-inline"><input type="radio" name="optradio">Linear Algebra</label>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="name">Description/Notes:</label>
+                          <input type="name" class="form-control" id="notes" placeholder="Describe your assignment or add a link to an assignment post">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="name">Time Needed to Complete</label>
+                          <input type="name" class="form-control" id="time" placeholder="Enter how many hours are needed to complete this assignment">
+                        </div>
+
+                      
+                  </div>
+                  <div class="modal-footer">
+                    <input type="submit" class="btn btn-default" data-dismiss="modal" value="Add"></input>
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+
             </div>
             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
           </div>
 
-          <p class="small text-center text-muted my-5">
-            <em>More table examples coming soon...</em>
-          </p>
 
         </div>
         <!-- /.container-fluid -->
