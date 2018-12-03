@@ -356,16 +356,19 @@
     <script src="js/demo/chart-area-demo.js"></script>
 
 
+      
       <script>
       $(function(){
         $.ajax({url: "/assignments", success: function(result){
             console.log('incoming assignments')
             console.log(result)
-            var d;
+            var d
             var weeks = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
             for (var i = 0; i < result.length; i++) {
                 d = new Date(result[i].due)
-                document.getElementById(weeks[d.getDay()]).innerHTML = result[i].title;
+                var weekPlacement = Math.floor(d.getDate() / 7)
+                var w = document.getElementById(weekPlacement)
+                w.getElementById(d.getDay()).innerHTML = result[i].title
             } 
           }});
     });
