@@ -175,6 +175,16 @@ app.get('/assignments', function(req, res){console.log('assignments')
 	}
 })
 
+app.get('/events', function(req, res){
+	if (req.session && req.session.id && req.session.userId) {
+		getEvents(req.session.userId.toString(), function(assignments){
+			res.send(assignments)
+		})
+	} else {
+		res.send('not today')
+	}
+})
+
 
 //app.get('/return_values', function(req, res){
 // 	res.end({data: getAssignments("5bff50cda47bb10edc148beb"))
@@ -233,13 +243,14 @@ var server = app.listen(8000, function () {
 
 function populateDatabase(){
 	var today = new Date()
-	//user1 = addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'arman.aydemir@colorado.edu', password:'woah', passwordConf:'woah'})
+	user1 = addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'arman.aydemir@colorado.edu', password:'woah', passwordConf:'woah'})
 	addAssignment("5bff50cda47bb10edc148beb", {completed:false, due: today, repeating:'', description:'test assignments', title:'test title',
 			notifications: null, numhours:5, worktime:null}) //user is yell@yell.com with password yell
 	addAssignment("5bff50cda47bb10edc148beb", {completed:false, due:  new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), repeating:'', description:'test assignments 2', title:'test title 2',
 			notifications: null, numhours:7, worktime:null})
+	addEvent("5bff50cda47bb10edc148beb", {start: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), end: new Date(today.getFullYear(), today.getMonth(), today.getDate()+8), repeating:'', description:'test assignments 2', title:'test title 2',
+			notifications: null})
 }
-
 
 
 //use this to authenticate on gets and puts
