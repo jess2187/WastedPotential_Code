@@ -138,9 +138,18 @@ function getPreferences(id){
   		dbd.collection(id.toString()).find().toArray(function(err, p){
   			if(err) throw err;
   			db.close();
-  			return p;
+  			return p[p.length -1];
   		});
 	})
+}
+
+function setPreferences(id, data){
+	MongoClient.connect(url, function(err, db) {
+		var dbd = db.db("preferences")
+		if (err) throw err;
+  		dbd.collection(id.toString()).insertOne(data, function(e, res){ if (e) throw e; });
+  		db.close();
+	});
 }
 
 function addUser(data){
@@ -185,14 +194,28 @@ app.get('/events', function(req, res){
 	}
 })
 
+app.get('/preferences', function(req, res){
+	if (req.session && req.session.id && req.session.userId) {
+		getPreferences(req.session.userId.toString(), function(assignments){
+			res.send(assignments)
+		})
+	} else {
+		res.send('not today')
+	}
+}
 
-//app.get('/return_values', function(req, res){
-// 	res.end({data: getAssignments("5bff50cda47bb10edc148beb"))
-// })
 
-app.get('/add_assignment', function(req,res){
+app.post('/add_assignment', function(req,res){
 	if (req.session && req.session.id && req.session.userId) {
 		addAssignment(req.session.userId, req.body)
+	} else {
+		res.redirect('/sign_in')
+	}
+})
+
+app.post('/set_preferences', function(req, res){console.log('set_preferences')
+	if (req.session && req.session.id && req.session.userId) {
+		setPreferences(req.session.userId, req.body)
 	} else {
 		res.redirect('/sign_in')
 	}
