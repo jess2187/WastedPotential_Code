@@ -367,8 +367,12 @@
             for (var i = 0; i < result.length; i++) {
                 d = new Date(result[i].due)
                 var weekPlacement = Math.floor(d.getDate() / 7)
-                var w = document.getElementById(weekPlacement)
-                w.getElementById(d.getDay()).innerHTML = result[i].title
+                console.log(weekPlacement)
+                var w = document.getElementById(weekPlacement.toString())
+                console.log(w)
+                var y = w.children[d.getDay()+1]
+                console.log(y)
+                y.innerHTML = result[i].title
             } 
           }});
     });
