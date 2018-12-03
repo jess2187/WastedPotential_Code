@@ -92,7 +92,7 @@ function addEvent(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("events")
 		if (err) throw err;
-  		dbd.collection(id.toString()).insertOne(data, function(e, res){ if (e) throw e; });
+  		dbd.collection(id).insertOne(data, function(e, res){ if (e) throw e; });
   		db.close();
 	});
 }
@@ -101,7 +101,7 @@ function getEvents(id){
 	MongoClient.connect(url, function(e, db){
 		var dbd = db.db("events")
 		if (e) throw e;
-  		dbd.collection(id.toString()).find().toArray(function(err, events){
+  		dbd.collection(id).find().toArray(function(err, events){
   			if(err) throw err;
   			db.close();
   			return events;
@@ -113,7 +113,7 @@ function addAssignment(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("assignments")
 		if (err) throw err;
-  		dbd.collection(id.toString()).insertOne(data, function(e, res){ if (e) throw e; });
+  		dbd.collection(id).insertOne(data, function(e, res){ if (e) throw e; });
   		db.close();
 	});
 }
@@ -135,7 +135,7 @@ function getPreferences(id){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("preferences")
 		if (err) throw err;
-  		dbd.collection(id.toString()).find().toArray(function(err, p){
+  		dbd.collection(id).find().toArray(function(err, p){
   			if(err) throw err;
   			db.close();
   			return p[p.length -1];
@@ -147,12 +147,12 @@ function setPreferences(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("preferences")
 		if (err) throw err;
-  		dbd.collection(id.toString()).insertOne(data, function(e, res){ if (e) throw e; });
+  		dbd.collection(id).insertOne(data, function(e, res){ if (e) throw e; });
   		db.close();
 	});
 }
 
-function addUser(data){
+function addUser(data, callback){
 	if (data.email &&
 	  data.password) {
 	  var userData = {
@@ -161,11 +161,15 @@ function addUser(data){
 	    firstName: data.firstName,
 	    lastName: data.lastName
 	  }
+	  
 	  User.create(userData, function (err, user) {
-	    if (err) {
-	      return -1
+	    if (err) {console.log('error--')
+	    	console.log(err)
+	      callback(-1)
 	    } else {
-	      return user._id
+	    	console.log('woah')
+	    	console.log(user._id)
+	        callback(user._id)
 	    }
 	  });
 	}
@@ -202,11 +206,12 @@ app.get('/preferences', function(req, res){
 	} else {
 		res.send('not today')
 	}
-}
+})
 
 
-app.post('/add_assignment', function(req,res){
+app.post('/add_assignment', function(req,res){console.log("add_assignment")
 	if (req.session && req.session.id && req.session.userId) {
+		req.body.repeating = ""
 		addAssignment(req.session.userId, req.body)
 	} else {
 		res.redirect('/sign_in')
@@ -266,15 +271,18 @@ var server = app.listen(8000, function () {
 
 function populateDatabase(){
 	var today = new Date()
-	user1 = addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'arman.aydemir@colorado.edu', password:'woah', passwordConf:'woah'})
-	addAssignment("5bff50cda47bb10edc148beb", {completed:false, due: today, repeating:'', description:'test assignments', title:'test title',
+	user1 = addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'rr@rr.com', password:'woah', passwordConf:'woah'}, function(usr1_id){
+		addAssignment(usr1_id.toString(), {completed:false, due: today, repeating:'', description:'test assignments', title:'test title',
 			notifications: null, numhours:5, worktime:null}) //user is yell@yell.com with password yell
-	addAssignment("5bff50cda47bb10edc148beb", {completed:false, due:  new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), repeating:'', description:'test assignments 2', title:'test title 2',
-			notifications: null, numhours:7, worktime:null})
-	addEvent("5bff50cda47bb10edc148beb", {start: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), end: new Date(today.getFullYear(), today.getMonth(), today.getDate()+8), repeating:'', description:'test assignments 2', title:'test title 2',
-			notifications: null})
+		addAssignment(usr1_id.toString(), {completed:false, due:  new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), repeating:'', description:'test assignments 2', title:'test title 2',
+				notifications: null, numhours:7, worktime:null})
+		addEvent(usr1_id.toString(), {start: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), end: new Date(today.getFullYear(), today.getMonth(), today.getDate()+8), repeating:'', description:'test assignments 2', title:'test title 2',
+				notifications: null})
+	})
+	
 }
 
+// populateDatabase()
 
 //use this to authenticate on gets and puts
 // UserSchema.statics.authenticate = function (email, password, callback) {
