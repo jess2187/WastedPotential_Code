@@ -22,7 +22,12 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
-
+  <style> 
+      #buttonsinline{
+        display:inline-block;
+        /**other codes**/
+      }
+  </style>
   </head>
 
   <body id="page-top">
@@ -140,12 +145,6 @@
           </div>
         </li>
         
-        <li class="nav-item">
-          <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
-        </li>
-        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
@@ -168,184 +167,126 @@
             <li class="breadcrumb-item">
               <a href="index.html">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">[ClassName]</li>
+            <li class="breadcrumb-item active">Calendar</li>
           </ol>
 
-          <!-- TODO: Make each page a different course the user  -->
 
-          <!-- Current Assignments Card-->
+          <!-- Calendar Card-->
           <div class="card mb-3">
-            <div class="card-header">
-			<i class="fas fa-file-alt"></i>              
-				Assignments 
-			  <!-- Trigger the modal with a button -->
-              	<button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#myModal">Add Assignment</button> </div>
+            <!-- <div class="card-header">
+              <i class="fas fa-chart-area"></i>  This creates the icon next to the word
+              Calendar</div> -->
             <div class="card-body">
-              <ul>
-              	<h5>This Week: </h5> <!-- TODO: make these links to actual assignments added in  -->
-                <li><div class="panel-group">
-					  <div class="panel panel-default">
-					    <div class="panel-heading">
-					      <h6 class="panel-title">
-					        <a data-toggle="collapse" href="#collapse1">Homework #1</a>
-					      </h6>
-					    </div>
-					    <div id="collapse1" class="panel-collapse collapse">
-					      <div class="panel-body">Due Date</div>
-					      <div class="panel-footer">Notes</div>
-					    </div>
-					  </div>
-					</div>
-				</li> 
-                <li><div class="panel-group">
-					  <div class="panel panel-default">
-					    <div class="panel-heading">
-					      <h6 class="panel-title">
-					        <a data-toggle="collapse" href="#collapse2">Homework #2</a>
-					      </h6>
-					    </div>
-					    <div id="collapse2" class="panel-collapse collapse">
-					      <div class="panel-body">Due Date</div>
-					      <div class="panel-footer">Notes</div>
-					    </div>
-					  </div>
-					</div></li>
-                <h5>Upcoming: </h5>
-                <li>
-	                <div class="panel-group">
-					  <div class="panel panel-default">
-					    <div class="panel-heading">
-					      <h6 class="panel-title">
-					        <a data-toggle="collapse" href="#collapse3">Homework #3</a>
-					      </h6>
-					    </div>
-					    <div id="collapse3" class="panel-collapse collapse">
-					      <div class="panel-body">Due Date</div>
-					      <div class="panel-footer">Notes</div>
-					    </div>
-					  </div>
-					</div>
-                </li>
-              </ul>
-				
-				  
-				  
+              <h4 style="text-align:center">Calendar View</h4>
+              <div class="btn-group-sm float-right">
+                <form action="calendar_daily.html" style="display:inline-block">
+                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Daily</button>
+                </form>
+                <form action="calendar_weekly.html" style="display:inline-block">
+                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Weekly</button>
+                </form>
+                <form action="calendar_monthly.html" style="display:inline-block">
+                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Monthly</button>
+                </form>
+              </div>
+              
+              <br><br>
+              <table style="width:100%; border: 1px solid black;">
+                <tr>
+                  <th>Times</th>
+                  <th>Sunday</th>
+                  <th>Monday</th> 
+                  <th>Tuesday</th>
+                  <th>Wednesday</th>
+                  <th>Thursday</th> 
+                  <th>Friday</th>
+                  <th>Saturday</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th> 
+                  <th>1</th>
+                  <th>1</th>
+                  <th>1</th>
+                </tr>
 
-				  <!-- Modal -->
-				  <div class="modal fade" id="myModal" role="dialog">
-				    <div class="modal-dialog modal-lg">
-				      <div class="modal-content">
-				        <div class="modal-header">
-				          	<h4 class="modal-title">Add Assignment</h4>
-				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
-				        </div>
-				        <div class="modal-body">
-				          	<form action="/action_page.php">
-							  <div class="form-group">
-							    <label for="name">Assignment Name:</label>
-							    <input type="name" class="form-control" id="name">
-							  </div>
 
-							  <div class="form-group">
-							    <label for="date">Due Date:</label>
-							    <input type="date" class="form-control" id="date" placeholder="MM/DD/YY">
-							  </div>
-
-							  <div class="form-group">
-							    <label for="name">Notes:</label>
-							    <input type="name" class="form-control" id="name" placeholder="Describe your assignment or add a link to an assignment post">
-							  </div>
-
-							</form>
-				        </div>
-				        <div class="modal-footer">
-				          <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
-				        </div>
-				      </div>
-				    </div>
-				  </div>
+              </table>
             </div>
           </div>
-
-           <!-- Upcoming Tests Card-->
-          <div class="card mb-3">
-            <div class="card-header">
-			<i class="fas fa-file-alt"></i>              
-				Exams 
-			  <!-- Trigger the modal with a button -->
-              	<button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#myModal">Add Exam</button> </div>
-            <div class="card-body">
-              <ul> 								<!-- TODO: make these links to actual assignments added in  -->
-                <li><div class="panel-group">
-					  <div class="panel panel-default">
-					    <div class="panel-heading">
-					      <h6 class="panel-title">
-					        <a data-toggle="collapse" href="#collapse4">Database Exam</a>
-					      </h6>
-					    </div>
-					    <div id="collapse4" class="panel-collapse collapse">
-					      <div class="panel-body">Date</div>
-					      <div class="panel-footer">Notes</div>
-					    </div>
-					  </div>
-					</div>
-				</li> 
-                <li><div class="panel-group">
-					  <div class="panel panel-default">
-					    <div class="panel-heading">
-					      <h6 class="panel-title">
-					        <a data-toggle="collapse" href="#collapse5">HTML Exam</a>
-					      </h6>
-					    </div>
-					    <div id="collapse5" class="panel-collapse collapse">
-					      <div class="panel-body">Date</div>
-					      <div class="panel-footer">Notes</div>
-					    </div>
-					  </div>
-					</div>
-				</li>
-              </ul>
-				
-				  
-				  
-
-				  <!-- Modal -->
-				  <div class="modal fade" id="myModal" role="dialog">
-				    <div class="modal-dialog modal-lg">
-				      <div class="modal-content">
-				        <div class="modal-header">
-				          	<h4 class="modal-title">Add Assignment</h4>
-				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
-				        </div>
-				        <div class="modal-body">
-				          	<form action="/action_page.php">
-							  <div class="form-group">
-							    <label for="name">Assignment Name:</label>
-							    <input type="name" class="form-control" id="name">
-							  </div>
-
-							  <div class="form-group">
-							    <label for="date">Due Date:</label>
-							    <input type="date" class="form-control" id="date" placeholder="MM/DD/YY">
-							  </div>
-
-							  <div class="form-group">
-							    <label for="name">Notes:</label>
-							    <input type="name" class="form-control" id="name" placeholder="Describe your assignment or add a link to an assignment post">
-							  </div>
-
-							</form>
-				        </div>
-				        <div class="modal-footer">
-				          <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
-				        </div>
-				      </div>
-				    </div>
-				  </div>
-            </div>
-          </div>
-
-          
 
         </div>
         <!-- /.container-fluid -->
