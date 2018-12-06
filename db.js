@@ -152,7 +152,7 @@ Collection: user.id
 
 DB: events
 Collection: user.id
-	Document: start - date, end - date, description - str, title - str , repeating, notifications
+	Document: date - datestartTime - time, endTime - time, description - str, title - str , repeating, notifications
 
 DB: assignments
 Collection: user.id 

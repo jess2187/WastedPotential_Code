@@ -165,9 +165,8 @@ function addUser(data, callback){
 	  User.create(userData, function (err, user) {
 	    if (err) {console.log('error--')
 	    	console.log(err)
-	      callback(-1)
+	      	callback(-1)
 	    } else {
-	    	console.log('woah')
 	    	console.log(user._id)
 	        callback(user._id)
 	        setPreferences(user._id.toString(), {"startstudy": 15, "endstudy": 19, "updates": null, "minstudytime": 0.5, "maxstudytime": 3})
@@ -237,7 +236,24 @@ app.post('/set_preferences', function(req, res){console.log('set_preferences')
 
 app.post('/add_event', function(req, res){console.log('add_event')
 	if (req.session && req.session.id && req.session.userId) {
-		addEvent(req.session.userId, req.body)
+		data = {
+			"date": req.body.date,
+			"description": req.body.description,
+			"title": req.body.title,
+			"notifications": null,
+			"startTime": req.body.startTime ,
+			"endTime": req.body.endTime
+		}
+
+		data.repeating = ""
+		if(data.repmonday){data.repeating += "M"}
+		if(data.reptuesday){data.repeating += "T"}
+		if(data.repwednesday){data.repeating += "W"}
+		if(data.repthursday){data.repeating += "Th"}
+		if(data.repfriday){data.repeating += 'F'}
+		if(data.repsaturday){data.repeating += 'S'}
+		if(data.repsunday){data.repeating += 'Su'}
+		addEvent(req.session.userId, data)
 	} else {
 		res.send('not today')
 	}
