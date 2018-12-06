@@ -104,7 +104,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="calendar.html">
+          <a class="nav-link" href="calendar_monthly.html">
             <i class="fas fa-calendar-alt"></i>
             <span>Calendar</span>
           </a>
@@ -112,14 +112,14 @@
 
         <li class="nav-item">
           <a class="nav-link" href="Assignments.html">
-            <i class="fas fa-calendar-alt"></i>
+            <i class="fas fa-file-alt"></i>
             <span>Assignments</span>
           </a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link" href="Events.html">
-            <i class="fas fa-calendar-alt"></i>
+            <i class="fas fa-calendar-check"></i>
             <span>Events</span>
           </a>
         </li>
@@ -156,7 +156,7 @@
           </div>
         </li>
         
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
             <span>Tables</span>
@@ -166,7 +166,7 @@
             <a class="dropdown-item" href="Assignments.html">Assignments</a>
             <a class="dropdown-item" href="AssignmentWorktimes.html">Assignment Work Times</a>
           </div>
-        </li>
+        </li> -->
       </ul>
 
       <div id="content-wrapper">
@@ -213,24 +213,22 @@
 
                         <div class="form-group">
                           <label for="date">Due Date:</label>
-                          <input type="date" class="form-control" id="date" placeholder="MM/DD/YY">
+                          <input type="datetime-local" class="form-control" id="date">
                         </div>
 
                         <div class="form-group">
-                          <label for="radio">Courses:</label>
-                          <label class="radio-inline"><input type="radio" name="optradio">Software Development</label>
-                          <label class="radio-inline"><input type="radio" name="optradio">Computer Systems</label>
-                          <label class="radio-inline"><input type="radio" name="optradio">Linear Algebra</label>
+                          <label for="course">Course:</label>
+                          <input type="text" class="form-control" id="course">
                         </div>
 
                         <div class="form-group">
-                          <label for="name">Description/Notes:</label>
-                          <input type="name" class="form-control" id="notes" placeholder="Describe your assignment or add a link to an assignment post">
+                          <label for="name">Description:</label>
+                          <input type="text" class="form-control" id="notes" placeholder="Describe your assignment">
                         </div>
 
                         <div class="form-group">
                           <label for="name">Time Needed to Complete</label>
-                          <input type="name" class="form-control" id="time" placeholder="Enter how many hours are needed to complete this assignment">
+                          <input type="text" class="form-control" id="time" placeholder="Hours needed to complete this assignment">
                         </div>
 
                       
@@ -311,7 +309,7 @@
           </div>
 
           <!-- Icon Cards-->
-          <div class="row"> <!-- could do something with these but dont know yet  -->
+          <!-- <div class="row"> 
             <div class="col-xl-3 col-sm-6 mb-3">
               <div class="card text-white bg-primary o-hidden h-100">
                 <div class="card-body">
@@ -376,7 +374,7 @@
                 </a>
               </div>
             </div>
-          </div>
+          </div> -->
 
         </div>
         <!-- /.container-fluid -->
