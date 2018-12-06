@@ -199,14 +199,97 @@
               <br><br>
               <table style="width:100%; border: 1px solid black;">
                 <tr>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
+                  <th>Times</th>
+                  <th>Sunday</th>
+                  <th>Monday</th> 
+                  <th>Tuesday</th>
+                  <th>Wednesday</th>
+                  <th>Thursday</th> 
+                  <th>Friday</th>
+                  <th>Saturday</th>
                 </tr>
+                <tr id= "0">
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
+                </tr>
+                <tr id= "1">
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
+                </tr>
+                <tr id= "2">
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
+                </tr>
+                <tr id= "3">
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
+                </tr>
+                <tr id= "4">
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
+                </tr>
+                <tr id= "5">
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
+                </tr>
+                <tr id= "6">
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
+                </tr>
+                <tr id= "7">
+                  <th id="Times">1</th>
+                  <th id="Sunday">1</th> 
+                  <th id="Monday">1</th>
+                  <th id="Tuesday">1</th>
+                  <th id="Wednesday">1</th> 
+                  <th id="Thursday">1</th>
+                  <th id="Friday">1</th>
+                  <th id="Saturday">1</th>
+                </tr>
+
+
               </table>
             </div>
           </div>
@@ -271,6 +354,31 @@
     <!-- Demo scripts for this page-->
     <script src="js/demo/datatables-demo.js"></script>
     <script src="js/demo/chart-area-demo.js"></script>
+
+
+      
+      <script>
+      $(function(){
+        $.ajax({url: "/assignments", success: function(result){
+            console.log('incoming assignments')
+            console.log(result)
+            var d
+            var weeks = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+            for (var i = 0; i < result.length; i++) {
+                d = new Date(result[i].due)
+                console.log(d)
+                var weekPlacement = Math.floor(d.getDate() / 7)
+                console.log(weekPlacement)
+                var w = document.getElementById(weekPlacement.toString())
+                console.log(w)
+                var y = w.children[d.getDay()+1]
+                console.log(y)
+                y.innerHTML = result[i].title
+            } 
+          }});
+    });
+    </script>
+    
 
   </body>
 

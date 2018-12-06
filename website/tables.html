@@ -155,48 +155,27 @@
                   <thead>
                     <tr>
                       <th>Due Date</th>
-                      <th>Class</th>
                       <th>Assignment</th>
                       <th>Assignment Descripiton/Notes</th>
-                      <th>%Assignment is Worth(Priority)</th>
-                      <th>Completion %</th>
-                      <th>Work Hours Left</th>
+<!--                       <th>%Assignment is Worth(Priority)</th> -->
+                      <th>Completed</th>
+   <!--                    <th>Work Hours Left</th> -->
                       <th>Work Hours Total</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
                       <th>Due Date</th>
-                      <th>Class</th>
                       <th>Assignment</th>
                       <th>Assignment Descripiton/Notes</th>
-                      <th>%Assignment is Worth(Priority)</th>
+<!--                       <th>%Assignment is Worth(Priority)</th> -->
                       <th>Completion %</th>
-                      <th>Work Hours Left</th>
+<!--                       <th>Work Hours Left</th> -->
                       <th>Work Hours Total</th>
                     </tr>
                   </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>12/09/2018</td>
-                      <td>CSCI 2400</td>
-                      <td>Shell Lab</td>
-                      <td>Fuck this</td>
-                      <td>10%</td>
-                      <td>-99%</td>
-                      <td>100,000,500</td>
-                      <td>100,000,000</td>
-                    </tr>
-                    <tr>
-                      <td>12/05/2018</td>
-                      <td>CSCI 2824</td>
-                      <td>Discrete Hw</td>
-                      <td>sadness</td>
-                      <td>3%</td>
-                      <td>10%</td>
-                      <td>1</td>
-                      <td>10</td>
-                    </tr>
+                  <tbody id="dataBody">
+
                   </tbody>
                 </table>
               </div>
@@ -266,6 +245,21 @@
 
     <!-- Demo scripts for this page-->
     <script src="js/demo/datatables-demo.js"></script>
+
+    <script>
+      $.ajax({url: "/assignments", success: function(result){
+        for (var i = result.length - 1; i >= 0; i--) {
+          $("#dataBody").append("<tr>")
+          $("#dataBody").append("<th>" + result[i].due + "</th>")
+          $("#dataBody").append("<th>" + result[i].title + "</th>")
+          $("#dataBody").append("<th>" + result[i].description + "</th>")
+          $("#dataBody").append("<th>" + result[i].notes + "</th>")
+          $("#dataBody").append("<th>" + result[i].completed + "</th>")
+          $("#dataBody").append("<th>" + result[i].numhours + "</th>")
+          $("#dataBody").append("</tr>")
+        }
+      }})
+    </script>
 
   </body>
 
