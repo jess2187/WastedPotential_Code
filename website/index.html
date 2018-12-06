@@ -442,8 +442,9 @@
     <script>
       $(function(){
         $.ajax({url: "/assignments", success: function(result){
-            console.log('incoming assignments')
-            console.log(result)
+            if(result == "not today"){
+              window.location.href="/website/login.html"; 
+            }
           }});
         $("#submitAssignmentButton").click(function(){
           data = {
