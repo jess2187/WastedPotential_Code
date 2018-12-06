@@ -461,6 +461,16 @@
       });
     </script>
 
+    <script>
+      $.ajax({url: "/assignments", success: function(result){
+        for (var i = result.length - 1; i >= 0; i--) {
+          if((new Date(result[i].due))==Date.now()){
+            $("#dataBody").append("<a class="dropdown-item" href="#">"+result[i].title+"</a>")
+          }
+        }
+      }})
+    </script>
+
   </body>
 
 </html>
