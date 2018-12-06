@@ -97,14 +97,14 @@ function addEvent(id, data){
 	});
 }
 
-function getEvents(id){
+function getEvents(id, callback){
 	MongoClient.connect(url, function(e, db){
 		var dbd = db.db("events")
 		if (e) throw e;
   		dbd.collection(id).find().toArray(function(err, events){
   			if(err) throw err;
   			db.close();
-  			return events;
+  			callback(events)
   		});
 	})
 }
@@ -131,14 +131,14 @@ function getAssignments(id, callback){
 }
 
 
-function getPreferences(id){
+function getPreferences(id, callback){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("preferences")
 		if (err) throw err;
   		dbd.collection(id).find().toArray(function(err, p){
   			if(err) throw err;
   			db.close();
-  			return p[p.length -1];
+  			callback(p[p.length -1])
   		});
 	})
 }
