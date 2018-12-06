@@ -216,7 +216,7 @@ app.post('/add_assignment', function(req,res){console.log("add_assignment")
 		data = {"repeating": "",
 			"due": new Date(req.body.date),
 			"numhours": parseFloat(req.body.time),
-			"notes": req.body.notes,
+			"description": req.body.notes,
 			"title": req.body.title,
 			"numhourscompleted": 0.0,
 			"worktime": []}

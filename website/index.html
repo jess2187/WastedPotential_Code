@@ -57,10 +57,9 @@
             <i class="fas fa-bell fa-fw"></i>
             <!-- <span class="badge badge-danger">9+</span> -->
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown" id="todayDropdown">
             <a class="dropdown-item" href="#">Due today! Submit...</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">  </a>
+            <div class="dropdown-divider" ></div>
           </div>
         </li>
         <!-- <li class="nav-item dropdown no-arrow mx-1">
@@ -462,13 +461,22 @@
     </script>
 
     <script>
-      $.ajax({url: "/assignments", success: function(result){
-        for (var i = result.length - 1; i >= 0; i--) {
-          if((new Date(result[i].due))==Date.now()){
-            $("#dataBody").append("<a class="dropdown-item" href="#">"+result[i].title+"</a>")
+     var current = new Date()
+        $(function(){
+        $.ajax({url: "/assignments", success: function(result){
+          console.log(result)
+          for (var i = result.length - 1; i >= 0; i--) {
+            var d = new Date(result[i].due)
+            console.log(d.getDate())
+            console.log(current.getDate())
+            if(d.getDate()== current.getDate()){
+              console.log('woah')
+              console.log($("#todayDropdown"))
+              $("#todayDropdown").append("<a class=\"dropdown-item\">"+result[i].title+"</a>")
+            }
           }
-        }
-      }})
+        }})
+      });
     </script>
 
   </body>
