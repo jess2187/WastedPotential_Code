@@ -418,7 +418,20 @@
         })
       });
     </script>
-
+    <script>
+      $.ajax({url: "/assignments", success: function(result){
+        for (var i = result.length - 1; i >= 0; i--) {
+          $("#dataBody").append("<tr>")
+          $("#dataBody").append("<th>" + result[i].due + "</th>")
+          $("#dataBody").append("<th>" + result[i].title + "</th>")
+          $("#dataBody").append("<th>" + result[i].description + "</th>")
+          $("#dataBody").append("<th>" + result[i].notes + "</th>")
+          $("#dataBody").append("<th>" + result[i].completed + "</th>")
+          $("#dataBody").append("<th>" + result[i].numhours + "</th>")
+          $("#dataBody").append("</tr>")
+        }
+      }})
+    </script>
   </body>
 
 </html>

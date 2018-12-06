@@ -190,7 +190,9 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Date/Time</th>
+                      <th>Date</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
                       <th>Event Name</th>
                       <th>Description</th>
                       <th>Weekly Repeating</th>
@@ -198,26 +200,19 @@
                   </thead>
                   <tfoot>
                     <tr>
-                      <th>Date/Time</th>
+                      <th>Date</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
                       <th>Event Name</th>
                       <th>Description</th>
                       <th>Weekly Repeating</th>
                     </tr>
                   </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>12/09/2018 12:00-14:00</td>
-                      <td>Software Developement Lecture</td>
-                      <td>Not worth</td>
-                      <td>MWF</td>
-                    </tr>
-                    <tr>
-                      <td>12/01/2018 10:00-11:00</td>
-                      <td>Computer Systems Lecture</td>
-                      <td>UGH</td>
-                      <td>no</td>
-                    </tr>
+
+                  <tbody id="dataBody">
+
                   </tbody>
+
                 </table>
               </div>
             </div>
@@ -381,6 +376,20 @@
       });
     </script>
 
+    <script>
+      $.ajax({url: "/events", success: function(result){
+        for (var i = result.length - 1; i >= 0; i--) {
+          $("#dataBody").append("<tr>")
+          $("#dataBody").append("<th>" + result[i].eventdate + "</th>")
+          $("#dataBody").append("<th>" + result[i].starttime + "</th>")
+          $("#dataBody").append("<th>" + result[i].endtime + "</th>")
+          $("#dataBody").append("<th>" + result[i].eventname + "</th>")
+          $("#dataBody").append("<th>" + result[i].eventdescription + "</th>")
+          $("#dataBody").append("<th>" + result[i].repeating + "</th>")
+          $("#dataBody").append("</tr>")
+        }
+      }})
+    </script>
   </body>
 
 </html>
