@@ -178,7 +178,7 @@ function addUser(data, callback){
 app.use('/website', express.static('website'))
 
 
-app.get('/assignments', function(req, res){console.log('assignments')
+app.get('/assignments', function(req, res){console.log('assignments') //sort this by time
 	if (req.session && req.session.id && req.session.userId) {
 		getAssignments(req.session.userId.toString(), function(assignments){
 			res.send(assignments)
@@ -188,7 +188,7 @@ app.get('/assignments', function(req, res){console.log('assignments')
 	}
 })
 
-app.get('/events', function(req, res){
+app.get('/events', function(req, res){ //sort this by time
 	if (req.session && req.session.id && req.session.userId) {
 		getEvents(req.session.userId.toString(), function(assignments){
 			res.send(assignments)
@@ -227,11 +227,13 @@ app.post('/set_preferences', function(req, res){console.log('set_preferences')
 })
 
 app.post('/sign_up', function(req, res){console.log('sign_up')
-	userId = addUser(req.body)
-	if(userId != -1){
-		console.log('sign up worked')
-		req.session.userId = userId
-	}
+	addUser(req.body, function(userId){
+		if(userId != -1){
+			console.log('sign up worked')
+			req.session.userId = userId
+		}
+	})
+	
 })
 
 app.post('/sign_in', function(req, res){ console.log('sign_in')
