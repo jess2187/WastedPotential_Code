@@ -380,11 +380,11 @@
       $.ajax({url: "/events", success: function(result){
         for (var i = result.length - 1; i >= 0; i--) {
           $("#dataBody").append("<tr>")
-          $("#dataBody").append("<th>" + result[i].eventdate + "</th>")
-          $("#dataBody").append("<th>" + result[i].starttime + "</th>")
-          $("#dataBody").append("<th>" + result[i].endtime + "</th>")
-          $("#dataBody").append("<th>" + result[i].eventname + "</th>")
-          $("#dataBody").append("<th>" + result[i].eventdescription + "</th>")
+          $("#dataBody").append("<th>" + result[i].date + "</th>")
+          $("#dataBody").append("<th>" + result[i].startTime + "</th>")
+          $("#dataBody").append("<th>" + result[i].endTime + "</th>")
+          $("#dataBody").append("<th>" + result[i].title + "</th>")
+          $("#dataBody").append("<th>" + result[i].description + "</th>")
           $("#dataBody").append("<th>" + result[i].repeating + "</th>")
           $("#dataBody").append("</tr>")
         }
