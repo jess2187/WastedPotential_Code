@@ -170,8 +170,11 @@ function addUser(data, callback){
 	    	console.log('woah')
 	    	console.log(user._id)
 	        callback(user._id)
+	        setPreferences(user._id.toString(), {"startstudy": 15, "endstudy": 19, "updates": null, "minstudytime": 0.5, "maxstudytime": 3})
 	    }
 	  });
+
+
 	}
 }
 
@@ -273,7 +276,7 @@ var server = app.listen(8000, function () {
 
 function populateDatabase(){
 	var today = new Date()
-	user1 = addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'rr@rr.com', password:'woah', passwordConf:'woah'}, function(usr1_id){
+	addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'rr@rr.com', password:'woah', passwordConf:'woah'}, function(usr1_id){
 		addAssignment(usr1_id.toString(), {completed:false, due: today, repeating:'', description:'test assignments', title:'test title',
 			notifications: null, numhours:5, worktime:null}) //user is yell@yell.com with password yell
 		addAssignment(usr1_id.toString(), {completed:false, due:  new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), repeating:'', description:'test assignments 2', title:'test title 2',
@@ -306,6 +309,8 @@ function populateDatabase(){
 //       })
 //     });
 // }
+
+
 
 
 

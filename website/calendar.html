@@ -182,20 +182,7 @@
             <!-- <div class="card-header">
               <i class="fas fa-chart-area"></i>  This creates the icon next to the word
               Calendar</div> -->
-            <div class="card-body">
-              <h4 style="text-align:center">Calendar View</h4>
-              <div class="btn-group-sm float-right">
-                <form action="calendar_daily.html" style="display:inline-block">
-                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Daily</button>
-                </form>
-                <form action="calendar_weekly.html" style="display:inline-block">
-                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Weekly</button>
-                </form>
-                <form action="calendar_monthly.html" style="display:inline-block">
-                  <button type="submit" value="Go to Google" class="btn btn-primary"/>Monthly</button>
-                </form>
-              </div>
-              
+              <h4 style="text-align:center" id="curMonth"></h4>
               <br><br>
               <table style="width:100%; border: 1px solid black;">
                 <tr>
@@ -209,7 +196,7 @@
                   <th>Saturday</th>
                 </tr>
                 <tr id= "0">
-                  <th id="Times">1</th>
+                  <th id="Times"></th>
                   <th id="Sunday">1</th> 
                   <th id="Monday">1</th>
                   <th id="Tuesday">1</th>
@@ -358,7 +345,10 @@
 
       
       <script>
-      $(function(){
+      $(function(){ var current = new Date()
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+        $("#curMonth").append(months[current.getMonth()])
         $.ajax({url: "/assignments", success: function(result){
             console.log('incoming assignments')
             console.log(result)
@@ -366,6 +356,7 @@
             var weeks = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
             for (var i = 0; i < result.length; i++) {
                 d = new Date(result[i].due)
+                if(current.getFullYear() == d.getFullYear() && current.getMonth() == d.getMonth()){
                 console.log(d)
                 var weekPlacement = Math.floor(d.getDate() / 7)
                 console.log(weekPlacement)
@@ -374,6 +365,7 @@
                 var y = w.children[d.getDay()+1]
                 console.log(y)
                 y.innerHTML = result[i].title
+              }
             } 
           }});
     });
