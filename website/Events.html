@@ -361,13 +361,13 @@
              endtime: $('#endtime').val(),
              starttime: $('#starttime').val(),
 
-             repmonday: $('#repmonday').val(),
-             reptuesday: $('#reptuesday').val(),
-             repwednesday: $('#repwednesday').val(),
-             repthursday: $('#repthursday').val(),
-             repfriday: $('#repfriday').val(),
-             repsaturday: $('#repsaturday').val(),
-             repsunday: $('#repsunday').val()} 
+             repmonday: $('#repmonday').is(':checked'),
+             reptuesday: $('#reptuesday').is(':checked'),
+             repwednesday: $('#repwednesday').is(':checked'),
+             repthursday: $('#repthursday').is(':checked'),
+             repfriday: $('#repfriday').is(':checked'),
+             repsaturday: $('#repsaturday').is(':checked'),
+             repsunday: $('#repsunday').is(':checked')} 
            console.log(data)
            $.ajax({url: "/add_event", method: "post", data: data, success: function(result){
               console.log(result)
