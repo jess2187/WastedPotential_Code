@@ -237,22 +237,23 @@ app.post('/set_preferences', function(req, res){console.log('set_preferences')
 app.post('/add_event', function(req, res){console.log('add_event')
 	if (req.session && req.session.id && req.session.userId) {
 		data = {
-			"date": req.body.date,
-			"description": req.body.description,
-			"title": req.body.title,
+			"date": req.body.eventdate,
+			"description": req.body.eventdescription,
+			"title": req.body.eventname,
 			"notifications": null,
-			"startTime": req.body.startTime ,
-			"endTime": req.body.endTime
+			"startTime": req.body.starttime ,
+			"endTime": req.body.endtime
 		}
 
 		data.repeating = ""
-		if(data.repmonday){data.repeating += "M"}
-		if(data.reptuesday){data.repeating += "T"}
-		if(data.repwednesday){data.repeating += "W"}
-		if(data.repthursday){data.repeating += "Th"}
-		if(data.repfriday){data.repeating += 'F'}
-		if(data.repsaturday){data.repeating += 'S'}
-		if(data.repsunday){data.repeating += 'Su'}
+		if(req.body.repmonday){data.repeating += "M"}
+		if(req.body.reptuesday){data.repeating += "T"}
+		if(req.body.repwednesday){data.repeating += "W"}
+		if(req.body.repthursday){data.repeating += "Th"}
+		if(req.body.repfriday){data.repeating += 'F'}
+		if(req.body.repsaturday){data.repeating += 'S'}
+		if(req.body.repsunday){data.repeating += 'Su'}
+		console.log(data)
 		addEvent(req.session.userId, data)
 	} else {
 		res.send('not today')
