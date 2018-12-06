@@ -270,7 +270,7 @@
              startstudy: $('#startstudy').val(),
              endstudy: $('#endstudy').val()} 
            console.log(data)
-           $.ajax({url: "/add_assignment", method: "post", data: data, success: function(result){
+           $.ajax({url: "/set_preferences", method: "post", data: data, success: function(result){
               console.log(result)
            }});
         })
