@@ -229,7 +229,7 @@
                 </table>
               </div>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            <div class="card-footer small text-muted"></div> <!-- Updated yesterday at 11:59 PM -->
             <!-- Modal (Add Assignment Popup) -->
             <div class="modal fade" id="myModal" role="dialog">
               <div class="modal-dialog modal-lg">
@@ -242,7 +242,7 @@
                       
                         <div class="form-group">
                           <label for="name">Event Name:</label>
-                          <input type="name" class="form-control" id="name">
+                          <input type="name" class="form-control" id="title">
                         </div>
 
                         <div class="form-group">
@@ -265,9 +265,6 @@
             </div>
           </div>
 
-          <p class="small text-center text-muted my-5">
-            <em>More table examples coming soon...</em>
-          </p>
 
         </div>
         <!-- /.container-fluid -->
@@ -327,6 +324,28 @@
 
     <!-- Demo scripts for this page-->
     <script src="js/demo/datatables-demo.js"></script>
+
+    <script>
+      $(function(){
+        $.ajax({url: "/assignments", success: function(result){
+            console.log('incoming assignments')
+            console.log(result)
+          }});
+        $("#submitAssignmentButton").click(function(){
+          data = {
+             title:$('#title').val(),
+             date:$('#date').val(),
+             notes: $('#notes').val(),
+             course: $('#course').val(),
+             time: $('#time').val()} 
+           console.log(data)
+           $.ajax({url: "/add_assignment", method: "post", data: data, success: function(result){
+              console.log(result)
+              console.log('hiiii')
+           }});
+        })
+      });
+    </script>
 
   </body>
 

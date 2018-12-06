@@ -248,7 +248,7 @@
                       
                        <div class="form-group">
                           <label for="name">Assignment Name:</label>
-                          <input type="name" class="form-control" id="name">
+                          <input type="name" class="form-control" id="title">
                         </div>
 
                         <div class="form-group">
@@ -268,7 +268,7 @@
 
                         <div class="form-group">
                           <label for="name">Time Needed to Complete</label>
-                          <input type="text" class="form-control" id="time" placeholder="Hours needed to complete this assignment">
+                          <input type="number" class="form-control" id="time" placeholder="Hours needed to complete this assignment">
                         </div>
 
                       
@@ -395,6 +395,28 @@
 
     <!-- Demo scripts for this page-->
     <script src="js/demo/datatables-demo.js"></script>
+
+    <script>
+      $(function(){
+        $.ajax({url: "/assignments", success: function(result){
+            console.log('incoming assignments')
+            console.log(result)
+          }});
+        $("#submitAssignmentButton").click(function(){
+          data = {
+             title:$('#title').val(),
+             date:$('#date').val(),
+             notes: $('#notes').val(),
+             course: $('#course').val(),
+             time: $('#time').val()} 
+           console.log(data)
+           $.ajax({url: "/add_assignment", method: "post", data: data, success: function(result){
+              console.log(result)
+              console.log('hiiii')
+           }});
+        })
+      });
+    </script>
 
   </body>
 
