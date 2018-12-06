@@ -214,12 +214,16 @@ app.get('/preferences', function(req, res){
 
 app.post('/add_assignment', function(req,res){console.log("add_assignment")
 	if (req.session && req.session.id && req.session.userId) {
-		req.body.repeating = ""
-		req.body.date = new Date(req.body.date)
-		console.log(req.body)
-		addAssignment(req.session.userId, req.body)
+		data = {"repeating": "",
+			"due": new Date(req.body.date),
+			"numhours": parseFloat(req.body.time),
+			"notes": req.body.notes,
+			"title": req.body.title,
+			"numhourscompleted": 0.0,
+			"worktime": []}
+		addAssignment(req.session.userId, data)
 	} else {
-		res.redirect('/sign_in')
+		res.send('not today')
 	}
 })
 
@@ -227,7 +231,15 @@ app.post('/set_preferences', function(req, res){console.log('set_preferences')
 	if (req.session && req.session.id && req.session.userId) {
 		setPreferences(req.session.userId, req.body)
 	} else {
-		res.redirect('/sign_in')
+		res.send('not today')
+	}
+})
+
+app.post('/add_event', function(req, res){console.log('add_event')
+	if (req.session && req.session.id && req.session.userId) {
+		addEvent(req.session.userId, req.body)
+	} else {
+		res.send('not today')
 	}
 })
 
