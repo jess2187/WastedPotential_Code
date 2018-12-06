@@ -168,11 +168,7 @@
             <li class="breadcrumb-item active">Overview</li>
           </ol>
 
-          <form action="index.html">
-            <div class="form-group">
-              <label for="Name">Name:</label>
-              <input type="name" class="form-control" id="name">
-            </div>
+          <form>
 
             <div class="form-group">
               <label for="radio">Minimum Assignment Work Times:</label><br>
@@ -190,8 +186,9 @@
               <label class="radio"><input type="radio" name="optradio">5+ Hours</label><br>
             </div>
 
-            <p><label>Lastest Study time(between 3pm and 3am): <input type=time min="15:00" max="3:00" step="1800"></label></p>
-            <p><label>Earliest Study time(between 3am and 3pm): <input type=time min="3:00" max="15:00" step="1800"></label></p>
+
+            <p><label>Earliest Time to Start Studying(between 3am and 3pm): <input type=time min="3:00" max="15:00" step="1800"></label></p>
+            <p><label>Latest Time to Stop Studying(between 3pm and 3am): <input type=time min="15:00" max="3:00" step="1800"></label></p>
             <input type="submit" value="Submit">
             </form>
 
@@ -255,6 +252,10 @@
     <!-- Demo scripts for this page-->
     <script src="js/demo/datatables-demo.js"></script>
     <script src="js/demo/chart-area-demo.js"></script>
+
+    <script>
+      
+    </script>
 
   </body>
 
