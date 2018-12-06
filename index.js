@@ -215,6 +215,8 @@ app.get('/preferences', function(req, res){
 app.post('/add_assignment', function(req,res){console.log("add_assignment")
 	if (req.session && req.session.id && req.session.userId) {
 		req.body.repeating = ""
+		req.body.date = new Date(req.body.date)
+		console.log(req.body)
 		addAssignment(req.session.userId, req.body)
 	} else {
 		res.redirect('/sign_in')
