@@ -97,14 +97,14 @@ function addEvent(id, data){
 	});
 }
 
-function getEvents(id){
+function getEvents(id, callback){
 	MongoClient.connect(url, function(e, db){
 		var dbd = db.db("events")
 		if (e) throw e;
   		dbd.collection(id).find().toArray(function(err, events){
   			if(err) throw err;
   			db.close();
-  			return events;
+  			callback(events)
   		});
 	})
 }
@@ -131,14 +131,14 @@ function getAssignments(id, callback){
 }
 
 
-function getPreferences(id){
+function getPreferences(id, callback){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("preferences")
 		if (err) throw err;
   		dbd.collection(id).find().toArray(function(err, p){
   			if(err) throw err;
   			db.close();
-  			return p[p.length -1];
+  			callback(p[p.length -1])
   		});
 	})
 }
@@ -165,9 +165,8 @@ function addUser(data, callback){
 	  User.create(userData, function (err, user) {
 	    if (err) {console.log('error--')
 	    	console.log(err)
-	      callback(-1)
+	      	callback(-1)
 	    } else {
-	    	console.log('woah')
 	    	console.log(user._id)
 	        callback(user._id)
 	        setPreferences(user._id.toString(), {"startstudy": 15, "endstudy": 19, "updates": null, "minstudytime": 0.5, "maxstudytime": 3})
@@ -214,12 +213,16 @@ app.get('/preferences', function(req, res){
 
 app.post('/add_assignment', function(req,res){console.log("add_assignment")
 	if (req.session && req.session.id && req.session.userId) {
-		req.body.repeating = ""
-		req.body.date = new Date(req.body.date)
-		console.log(req.body)
-		addAssignment(req.session.userId, req.body)
+		data = {"repeating": "",
+			"due": new Date(req.body.date),
+			"numhours": parseFloat(req.body.time),
+			"notes": req.body.notes,
+			"title": req.body.title,
+			"numhourscompleted": 0.0,
+			"worktime": []}
+		addAssignment(req.session.userId, data)
 	} else {
-		res.redirect('/sign_in')
+		res.send('not today')
 	}
 })
 
@@ -227,7 +230,32 @@ app.post('/set_preferences', function(req, res){console.log('set_preferences')
 	if (req.session && req.session.id && req.session.userId) {
 		setPreferences(req.session.userId, req.body)
 	} else {
-		res.redirect('/sign_in')
+		res.send('not today')
+	}
+})
+
+app.post('/add_event', function(req, res){console.log('add_event')
+	if (req.session && req.session.id && req.session.userId) {
+		data = {
+			"date": req.body.date,
+			"description": req.body.description,
+			"title": req.body.title,
+			"notifications": null,
+			"startTime": req.body.startTime ,
+			"endTime": req.body.endTime
+		}
+
+		data.repeating = ""
+		if(data.repmonday){data.repeating += "M"}
+		if(data.reptuesday){data.repeating += "T"}
+		if(data.repwednesday){data.repeating += "W"}
+		if(data.repthursday){data.repeating += "Th"}
+		if(data.repfriday){data.repeating += 'F'}
+		if(data.repsaturday){data.repeating += 'S'}
+		if(data.repsunday){data.repeating += 'Su'}
+		addEvent(req.session.userId, data)
+	} else {
+		res.send('not today')
 	}
 })
 
