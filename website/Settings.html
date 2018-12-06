@@ -2,7 +2,7 @@
 <html lang="en">
 
   <head>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -55,7 +55,7 @@
         <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
-            <span class="badge badge-danger">9+</span>
+            <!-- <span class="badge badge-danger">9+</span> -->
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
             <a class="dropdown-item" href="#">Action</a>
@@ -64,10 +64,10 @@
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
         </li>
-        <li class="nav-item dropdown no-arrow mx-1">
+        <!-- <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-envelope fa-fw"></i>
-            <span class="badge badge-danger">7</span>
+             <span class="badge badge-danger">7</span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
             <a class="dropdown-item" href="#">Action</a>
@@ -75,7 +75,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
-        </li>
+        </li> -->
         <li class="nav-item dropdown no-arrow">
           <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-circle fa-fw"></i>
@@ -110,10 +110,24 @@
           </a>
         </li>
 
-        <li class="nav-item dropdown">
+        <li class="nav-item">
+          <a class="nav-link" href="Assignments.html">
+            <i class="fas fa-file-alt"></i>
+            <span>Assignments</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="Events.html">
+            <i class="fas fa-calendar-check"></i>
+            <span>Events</span>
+          </a>
+        </li>
+
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-book"></i>
-            <span>Courses</span>
+            <span>Assignments</span> 
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
 
@@ -123,9 +137,9 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="courses.html">Add Course</a>
           </div>
-        </li>
+        </li> -->
 
-        <li class="nav-item dropdown">
+<!--         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
             <span>Pages</span>
@@ -140,10 +154,9 @@
             <a class="dropdown-item" href="404.html">404 Page</a>
             <a class="dropdown-item" href="blank.html">Blank Page</a>
           </div>
-        </li>
-      
+        </li> -->
         
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
             <span>Tables</span>
@@ -153,7 +166,7 @@
             <a class="dropdown-item" href="Assignments.html">Assignments</a>
             <a class="dropdown-item" href="AssignmentWorktimes.html">Assignment Work Times</a>
           </div>
-        </li>
+        </li> -->
       </ul>
 
       <div id="content-wrapper">
@@ -169,27 +182,31 @@
           </ol>
 
           <form>
+            <form>
+              <div class="form-group">
+                <label for="radio">Minimum Assignment Work Times:</label><br>
+                <label class="radio"><input id="minstudytime" type="radio" name="optradio">30 Minutes</label><br>
+                <label class="radio"><input id="minstudytime" type="radio" name="optradio">1 Hour</label><br>
+                <label class="radio"><input id="minstudytime" type="radio" name="optradio">2 Hours</label><br>
+                <label class="radio"><input id="minstudytime" type="radio" name="optradio">3+ Hours</label><br>
+              </div>
+            </form>
+            
+            <form>
+              <div class="form-group">
+                <label for="radio">Maximum Assignment Work Times:</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">1 Hour</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">2 Hours</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">3 Hours</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">4 Hours</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">5+ Hours</label><br>
+              </div>
+            </form>
 
-            <div class="form-group">
-              <label for="radio">Minimum Assignment Work Times:</label><br>
-              <label class="radio"><input type="radio" name="optradio">30 Minutes</label><br>
-              <label class="radio"><input type="radio" name="optradio">1 Hour</label><br>
-              <label class="radio"><input type="radio" name="optradio">2 Hours</label><br>
-              <label class="radio"><input type="radio" name="optradio">3+ Hours</label><br>
-            </div>
-            <div class="form-group">
-              <label for="radio">Maximum Assignment Work Times:</label><br>
-              <label class="radio"><input type="radio" name="optradio">1 Hour</label><br>
-              <label class="radio"><input type="radio" name="optradio">2 Hours</label><br>
-              <label class="radio"><input type="radio" name="optradio">3 Hours</label><br>
-              <label class="radio"><input type="radio" name="optradio">4 Hours</label><br>
-              <label class="radio"><input type="radio" name="optradio">5+ Hours</label><br>
-            </div>
 
-
-            <p><label>Earliest Time to Start Studying(between 3am and 3pm): <input type=time min="3:00" max="15:00" step="1800"></label></p>
-            <p><label>Latest Time to Stop Studying(between 3pm and 3am): <input type=time min="15:00" max="3:00" step="1800"></label></p>
-            <input type="submit" value="Submit">
+            <p><label>Earliest Time to Start Studying(between 3am and 3pm): <input id="startstudy" type=time min="3:00" max="15:00" step="1800"></label></p>
+            <p><label>Latest Time to Stop Studying(between 3pm and 3am): <input id="endstudy" type=time min="15:00" max="3:00" step="1800"></label></p>
+            <input type="submit" id="submitSettingsButton" value="Submit">
             </form>
 
         <!-- Sticky Footer -->
@@ -254,7 +271,23 @@
     <script src="js/demo/chart-area-demo.js"></script>
 
     <script>
-      
+      $(function(){
+        $.ajax({url: "/preferences", success: function(result){
+            console.log('incoming settings')
+            console.log(result)
+          }});
+        $("#submitSettingsButton").click(function(){
+          data = {
+             minstudytime:$('#minstudytime').val(),
+             maxstudytime: $('#maxstudytime').val(),
+             startstudy: $('#startstudy').val(),
+             endstudy: $('#endstudy').val()} 
+           console.log(data)
+           $.ajax({url: "/set_preferences", method: "post", data: data, success: function(result){
+              console.log(result)
+           }});
+        })
+      });
     </script>
 
   </body>
