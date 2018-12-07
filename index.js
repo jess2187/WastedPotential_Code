@@ -300,6 +300,10 @@ app.get('/logout', function(req, res, next) {
   }
 });
 
+app.get('*', function(req, res){
+  res.status(404).send('404 Error');
+});
+
 
 var server = app.listen(8000, function () {
     console.log("Listening on port %s...", server.address().port);
