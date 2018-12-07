@@ -186,10 +186,7 @@
               Current Assignments
               <button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#myModal">Add Assignment</button></div>
             <div class="card-body">
-              <ul>
-                <li>Homework Assignment #1</li> <!-- TODO: make these links to actual assignments added in  -->
-                <li>Homework Assignment #2</li>
-                <li>Homework Assignment #3</li>
+              <ul id="dashboardAssignmentList">
               </ul>
             </div>
             <!-- Modal (Add Assignment Popup) -->
@@ -438,10 +435,21 @@
     <script src="js/demo/chart-area-demo.js"></script>
 
     <script>
-      $(function(){
-        $.ajax({url: "/assignments", success: function(result){
+      $(function(){var current = new Date()
+        $.ajax({url: "/sorted_assignments", success: function(result){
+            console.log(result)
             if(result == "not today"){
               window.location.href="/website/login.html"; 
+            }else{
+              for (var i = result.length - 1; i >= 0; i--) {
+                var d = new Date(result[i].due)
+                if(d.getDate()== current.getDate()){
+                  $("#todayDropdown").append("<a class=\"dropdown-item\">"+result[i].title+"</a>")
+                }
+                if(d > current){
+                  $("#dashboardAssignmentList").append("<li>" + result[i].title + "</li>")
+                }
+              }
             }
           }});
         $("#submitAssignmentButton").click(function(){
@@ -459,26 +467,6 @@
         })
       });
     </script>
-
-    <script>
-     var current = new Date()
-        $(function(){
-        $.ajax({url: "/assignments", success: function(result){
-          console.log(result)
-          for (var i = result.length - 1; i >= 0; i--) {
-            var d = new Date(result[i].due)
-            console.log(d.getDate())
-            console.log(current.getDate())
-            if(d.getDate()== current.getDate()){
-              console.log('woah')
-              console.log($("#todayDropdown"))
-              $("#todayDropdown").append("<a class=\"dropdown-item\">"+result[i].title+"</a>")
-            }
-          }
-        }})
-      });
-    </script>
-
   </body>
 
 </html>

@@ -120,50 +120,6 @@
             <span>Events</span>
           </a>
         </li>
-
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-book"></i>
-            <span>Assignments</span> 
-          </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-
-            <a class="dropdown-item" href="courses.html">Software Development</a>
-            <a class="dropdown-item" href="courses.html">Computer Systems</a>
-            <a class="dropdown-item" href="courses.html">Linear Algebra</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="courses.html">Add Course</a>
-          </div>
-        </li> -->
-
-<!--         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <h6 class="dropdown-header">Login Screens:</h6>
-            <a class="dropdown-item" href="login.html">Login</a>
-            <a class="dropdown-item" href="register.html">Register</a>
-            <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
-            <div class="dropdown-divider"></div>
-            <h6 class="dropdown-header">Other Pages:</h6>
-            <a class="dropdown-item" href="404.html">404 Page</a>
-            <a class="dropdown-item" href="blank.html">Blank Page</a>
-          </div>
-        </li> -->
-        
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Tables</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <a class="dropdown-item" href="events.html">Events</a>
-            <a class="dropdown-item" href="Assignments.html">Assignments</a>
-            <a class="dropdown-item" href="AssignmentWorktimes.html">Assignment Work Times</a>
-          </div>
-        </li> -->
       </ul>
 
       <div id="content-wrapper">
@@ -379,18 +335,19 @@
     <script>
     var current = new Date()
       $(function(){
-      $.ajax({url: "/events", success: function(result){
-        for (var i = result.length - 1; i >= 0; i--) {
-          $("#dataBody").append("<tr>")
-          $("#dataBody").append("<th>" + result[i].date + "</th>")
-          $("#dataBody").append("<th>" + result[i].startTime + "</th>")
-          $("#dataBody").append("<th>" + result[i].endTime + "</th>")
-          $("#dataBody").append("<th>" + result[i].title + "</th>")
-          $("#dataBody").append("<th>" + result[i].description + "</th>")
-          $("#dataBody").append("<th>" + result[i].repeating + "</th>")
-          $("#dataBody").append("</tr>")
-        }
-      }})
+        $.ajax({url: "/events", success: function(result){
+          for (var i = result.length - 1; i >= 0; i--) {
+            $("#dataBody").append("<tr>")
+            $("#dataBody").append("<th>" + result[i].date + "</th>")
+            $("#dataBody").append("<th>" + result[i].startTime + "</th>")
+            $("#dataBody").append("<th>" + result[i].endTime + "</th>")
+            $("#dataBody").append("<th>" + result[i].title + "</th>")
+            $("#dataBody").append("<th>" + result[i].description + "</th>")
+            $("#dataBody").append("<th>" + result[i].repeating + "</th>")
+            $("#dataBody").append("</tr>")
+          }
+        }})
+
       });
     </script>
   </body>

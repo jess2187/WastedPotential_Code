@@ -188,7 +188,7 @@
               </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="assignmentsTable" width="100%" cellspacing="0">
                   <thead>
                    <tr>
                       <th>Due Date</th>
@@ -254,7 +254,7 @@
                       
                   </div>
                   <div class="modal-footer">
-                    <input type="submit" class="btn btn-default" data-dismiss="modal" id="submitAssignemtnButton" value="Add"></input>
+                    <input type="submit" class="btn btn-default" data-dismiss="modal" id="submitAssigmentButton" value="Add"></input>
                   </div>
                 </div>
               </div>
@@ -271,7 +271,7 @@
               Assignment Work Times</div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="workTimesTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Assignment Working On</th>
@@ -400,15 +400,26 @@
     <script>
       var current = new Date()
       $(function(){
+        $('#assignmentsTable').dataTable( {
+            "language": {
+                "zeroRecords": null,
+                "emptyTable": null
+            }
+         });
         $.ajax({url: "/assignments", success: function(result){
           console.log(result)
-          for (var i = result.length - 1; i >= 0; i--) {
-            $("#dataBody").append("<tr>")
-            $("#dataBody").append("<th>" + result[i].due + "</th>")
-            $("#dataBody").append("<th>" + result[i].title + "</th>")
-            $("#dataBody").append("<th>" + result[i].description + "</th>")
-            $("#dataBody").append("<th>" + result[i].numhours + "</th>")
-            $("#dataBody").append("</tr>")
+          if(result == "not today"){
+            window.location.href="/website/login.html"; 
+          }else{
+            for (var i = result.length - 1; i >= 0; i--) {
+              $("#dataBody").append("<tr>")
+              $("#dataBody").append("<th>" + result[i].due + "</th>")
+              $("#dataBody").append("<th>" + result[i].title + "</th>")
+              $("#dataBody").append("<th>" + result[i].description + "</th>")
+              $("#dataBody").append("<th>" + result[i].numhourscompleted + "</th>")
+              $("#dataBody").append("<th>" + result[i].numhours + "</th>")
+              $("#dataBody").append("</tr>")
+            }
           }
         }})
       });

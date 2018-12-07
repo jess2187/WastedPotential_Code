@@ -152,7 +152,7 @@ function setPreferences(id, data){
 	});
 }
 
-function addUser(data, callback){
+function addUser(data, callback){console.log(data)
 	if (data.email &&
 	  data.password) {
 	  var userData = {
@@ -174,15 +174,30 @@ function addUser(data, callback){
 	  });
 
 
+	}else{
+		callback(-1)
 	}
 }
 
 app.use('/website', express.static('website'))
 
 
-app.get('/assignments', function(req, res){console.log('assignments') //sort this by time
+app.get('/assignments*', function(req, res){console.log('assignments') 
 	if (req.session && req.session.id && req.session.userId) {
 		getAssignments(req.session.userId.toString(), function(assignments){
+			res.send(assignments)
+		})
+	} else {
+		res.send('not today')
+	}
+})
+
+app.get('/sorted_assignments', function(req, res){console.log('/sorted_assignments')
+	if (req.session && req.session.id && req.session.userId) {
+		getAssignments(req.session.userId.toString(), function(assignments){
+			assignments.sort(function(a,b){
+			  return b.due - a.date;
+			});
 			res.send(assignments)
 		})
 	} else {
@@ -261,13 +276,17 @@ app.post('/add_event', function(req, res){console.log('add_event')
 })
 
 app.post('/sign_up', function(req, res){console.log('sign_up')
-	addUser(req.body, function(userId){
-		if(userId != -1){
-			console.log('sign up worked')
-			req.session.userId = userId
-		}
-	})
-	
+	if(req.body.password == req.body.passwordConf){
+		addUser(req.body, function(userId){
+			if(userId != -1){
+				console.log('sign up worked')
+				req.session.userId = userId
+				res.redirect('/website/index.html')
+			}else{
+				res.redirect('/website/register.html')
+			}
+		})
+	}res.redirect('/website/register.html')
 })
 
 app.post('/sign_in', function(req, res){ console.log('sign_in')
