@@ -345,6 +345,11 @@ function populateDatabase(){
 
 // populateDatabase()
 
+
+// $('#calendar').fullCalendar({
+//   schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives'
+// });
+
 //use this to authenticate on gets and puts
 // UserSchema.statics.authenticate = function (email, password, callback) {
 //   User.findOne({ email: email })

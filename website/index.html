@@ -2,7 +2,6 @@
 <html lang="en">
 
   <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,6 +24,19 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
+
+    <style>
+      #calendar {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+    </style>
+
+    <link href='fullcalendar/fullcalendar.min.css' rel='stylesheet' />
+    <link href='fullcalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <script src='lib/moment.min.js'></script>
+    <script src='lib/jquery.min.js'></script>
+    <script src='fullcalendar/fullcalendar.min.js'></script>
 
   </head>
 
@@ -237,69 +249,9 @@
           </div>
 
           <!-- Calendar Card-->
-          <div class="card mb-3"> <!-- TODO: replace with actual calendar   -->
-            <!-- <div class="card-header">
-              <i class="fas fa-chart-area"></i>  
-              Calendar</div> -->
-            <div class="card-body">
-              <h4 style="text-align:center">MONTH</h4>
-              <table style="width:100%">
-                <tr>
-                  <th></th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                </tr>
-                <tr>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                </tr>
-                <tr>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                </tr>
-                <tr>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                </tr>
-                <tr>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                </tr>
-                <tr>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                  <th>1</th> 
-                  <th>1</th>
-                  <th>1</th>
-                </tr>
-              </table>
-            </div>
+          <div id='calendar'> 
+
+      
           </div>
 
           <!-- Icon Cards-->
@@ -416,26 +368,21 @@
     <!-- Bootstrap Stuff  -->
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin.min.js"></script>
 
-    <!-- Demo scripts for this page-->
-    <script src="js/demo/datatables-demo.js"></script>
-    <script src="js/demo/chart-area-demo.js"></script>
-
     <script>
       $(function(){var current = new Date()
+        $('#calendar').fullCalendar({
+          defaultDate:  current.getFullYear() + '-' + (current.getMonth()+1)+ '-' + current.getDate(),
+          editable: false,
+          eventLimit: true
+        });
         $.ajax({url: "/sorted_assignments", success: function(result){
             console.log(result)
             if(result == "not today"){
@@ -443,6 +390,8 @@
             }else{
               for (var i = result.length - 1; i >= 0; i--) {
                 var d = new Date(result[i].due)
+                var event_data = {'start': result[i].due, 'title': result[i].title}
+                $('#calendar').fullCalendar('renderEvent', event_data)
                 if(d.getDate()== current.getDate()){
                   $("#todayDropdown").append("<a class=\"dropdown-item\">"+result[i].title+"</a>")
                 }
