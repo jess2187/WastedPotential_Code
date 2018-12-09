@@ -299,6 +299,8 @@
         $.ajax({url: "/preferences", success: function(result){
             console.log('incoming settings')
             console.log(result)
+            $("#startstudy").attr("value", result.startstudy);
+            $("#endstudy").attr("value", result.endstudy);
           }});
         $("#submitSettingsButton").click(function(){
           data = {

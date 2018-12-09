@@ -112,40 +112,54 @@ function determineOptimalTimes(id){
 		getPreferences(id, function(preferences){
 			var start_hour = preferences[preferences.length - 1].start_study;
 			var end_hour = preferences[preferences.length - 1].end_study;
-		});
 
-		var today = new Date();
+			var today = new Date();
 
-		start_work = start_hour;
-		for (var i = 0; i < assignments.length; i++){
-			var numDays = assignments[i].due.getDate() - today.getDate();
-			var hours_to_complete = numDays * (end_hour - start_hour);
-			if (hours_to_complete < numHours){
-				return "Not enough hours to complete assignment.";
-			}
-
-
+			start_work = start_hour;
+			for (var i = 0; i < assignments.length; i++){
+				var numDays = assignments[i].due.getDate() - today.getDate();
+				var hours_to_complete = numDays * (end_hour - start_hour);
+				if (hours_to_complete < numHours){
+					return "Not enough hours to complete assignment.";
+				}
 			var current_date = new Date();
 			study_left = end_hour - start_hour;
 			//current_date.setHours(start_work);
 			if (assignments.numhours < study_left){
-				start_date = current_date.setHours(start_work);
-				end_date = current_date.setHours(start_work + assignments[i].numhours)
-				assignments.worktime[0] = start_date;
-				assignments.worktime[1] = end_date;
+				var start_date = current_date.setHours(start_work);
+				var end_date = current_date.setHours(start_work + assignments[i].numhours);
+				var worktime;
+				worktime.start_time = start_date;
+				worktime.end_time = end_date;
+				assignments[i].worktime[0] = worktime;
 				start_work = start_work + assignments[i].numhours;
 			} else {
-				start_date = current_date.setHours(start_work);
-				assignments.worktime[0] = start_date;
-				hours_left = end_hour - start_work;
-				additional_hours = assignments[i].numhours - hours_left;
-				end_date = start_date.setDate(start_date.getDate() + 1);
-				end_date.setHours(start_hour + additional_hours)
-				assignments.worktime[1] = end_date;
-				start_work = end_date.getHours();
-			}
-		}
+				hours_to_assign = assignments[i].numhours;
+				index = 0;
+				while (hours_to_assign > 0){
+					if (index > 0){
+						start_work = start_hour;
+					}
+					hours_left = end_hour - start_work;
+					var worktime;
+					var start_date = current_date.setHours(start_work);
+					worktime.start_time = start_date;
+					if (hours_to_assign > hours_left){
+						worktime.end_time = end_hour;
+						hours_to_assign = assignments[i].numhours - (end_hour - start_work);
+					} else {
+						worktime.end_time = start_date.setHours(start_date.getHours() + hours_to_assign);
+						hours_to_assign = 0;
+					}
+					
+					assignments[i].worktime[index] = worktime;
 
+					index++;
+
+					current_date.setDate(start_date.getDate() + 1);
+				}
+			}
+		});
 	});
 
 	//A bunch of junkyard code that I originally wrote but ended up changing my approach.
@@ -206,7 +220,13 @@ function determineOptimalTimes(id){
 				}
 			}
 		}
-	}*/
+	}
+
+					additional_hours = assignments[i].numhours - hours_left;
+					end_date = start_date.setDate(start_date.getDate() + 1);
+					end_date.setHours(start_hour + additional_hours)
+					assignments.worktime[1] = end_date;
+					start_work = end_date.getHours();*/
 
 }
 
@@ -228,6 +248,20 @@ function getEvents(id, callback){
   			db.close();
   			callback(events)
   		});
+	})
+}
+
+function setAssignment(id, data){
+	MongoClient.connect(url, function(err, db) {
+		var dbd = db.db("assignments")
+		if (err) throw err;
+		var s = new ObjectId(data._id)
+		var q = {'_id': s}
+		var nv = {$set:data}
+		dbd.collection('sessions').updateOne(q, nv, function(err, result){
+			if(err) throw err
+			db.close()
+		});
 	})
 }
 
@@ -304,26 +338,34 @@ function addUser(data, callback){console.log(data)
 app.use('/website', express.static('website'))
 
 
-app.get('/calendar', function(req, res){console.log('calendar')
-	if(req.session && req.session.id && req.session.userId) {
-		getAssignments(req.session.userId.toString(), function(assignments){
-			assignments.map(function(x) {
-				y = x
-				y.start = x.due
-			})
-			console.log(assignments)
-			getEvents(req.session.userId.toString(), function(events){
-				console.log(events)
-				res.send(assignments.concat(events))
-			})
-		})
-	} else {
-		res.send('not today')
-	}
-})
+// app.get('/calendar', function(req, res){console.log('calendar')
+// 	if(req.session && req.session.id && req.session.userId) {
+// 		getAssignments(req.session.userId.toString(), function(assignments){
+// 			assignments.map(function(x) {
+// 				var y = x
+// 				y.start = x.due
+// 				return y
+// 			})
+// 			console.log(assignments)
+// 			getEvents(req.session.userId.toString(), function(events){
+// 				assignments.map(function(x) {
+// 					var y = x
+// 					y.start = x.startTime
+// 					y.end = x.endTime
+// 					return y
+// 				})
+// 				console.log(events)
+// 				res.send(assignments.concat(events))
+// 			})
+// 		})
+// 	} else {
+// 		res.send('not today')
+// 	}
+// })
 
 app.get('/assignments', function(req, res){console.log('assignments') 
 	if (req.session && req.session.id && req.session.userId) {
+		//determineOptimalTimes(req.session.userId.toString())
 		getAssignments(req.session.userId.toString(), function(assignments){
 			res.send(assignments)
 		})
@@ -345,7 +387,7 @@ app.get('/sorted_assignments', function(req, res){console.log('/sorted_assignmen
 	}
 })
 
-app.get('/events', function(req, res){ //sort this by time
+app.get('/events', function(req, res){ console.log('events')
 	if (req.session && req.session.id && req.session.userId) {
 		getEvents(req.session.userId.toString(), function(assignments){
 			res.send(assignments)
@@ -480,7 +522,6 @@ function populateDatabase(){
 		addEvent(usr1_id.toString(), {start: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), end: new Date(today.getFullYear(), today.getMonth(), today.getDate()+8), repeating:'', description:'test assignments 2', title:'test title 2',
 				notifications: null})
 	})
-	
 }
 
 // populateDatabase()

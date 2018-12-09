@@ -337,14 +337,6 @@
 
     <script>
       $(function(){var current = new Date()    
-        $.ajax({url:"/calendar", success: function(result){
-          $('#calendar').fullCalendar({
-            defaultDate:  current.getFullYear() + '-' + (current.getMonth()+1)+ '-' + current.getDate(),
-            editable: false,
-            eventLimit: true,
-            events: result
-          });
-        }})  
         $.ajax({url: "/sorted_assignments", success: function(result){
             console.log(result)
             if(result == "not today"){
@@ -360,11 +352,28 @@
                 if(d > current){
                   $("#dashboardAssignmentList").append("<li>" + result[i].title + "</li>")
                 }
-              }console.log(result)
-               
+                for(var w = result[i].worktime.length -1; w >= 0; w--){
+                  var worktime_data = result[i].worktime[w]
+                  worktime_data.title = result[i].title + " Scheduled Work Time"
+                  result.append(worktime_data)
+                }
+              }
+              $.ajax({url:"/events", success: function(events){
+                for (var i = events.length - 1; i >= 0; i--) {
+                  events[i].start = new Date(events[i].date + 'T' + events[i].startTime)
+                  events[i].end = new Date(events[i].date + 'T' + events[i].endTime)
+                  events[i].color = "red"
+                }
+                $('#calendar').fullCalendar({
+                  defaultDate:  current.getFullYear() + '-' + (current.getMonth()+1)+ '-' + current.getDate(),
+                  editable: false,
+                  eventLimit: true,
+                  events: events.concat(result)
+                });
+               }})
             }
-          }});
-      });
+        }});
+      })
     </script>
   </body>
 
