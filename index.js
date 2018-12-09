@@ -361,7 +361,6 @@ function populateDatabase(){
 		addEvent(usr1_id.toString(), {start: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), end: new Date(today.getFullYear(), today.getMonth(), today.getDate()+8), repeating:'', description:'test assignments 2', title:'test title 2',
 				notifications: null})
 	})
-	
 }
 
 // populateDatabase()
