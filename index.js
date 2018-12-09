@@ -74,6 +74,15 @@ module.exports = User;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+function sort_by_priority(a, b){
+	if (a[3] === b[3]){
+		return 0;
+	}
+	else {
+		return (a[3] < b[3]) ? -1 : 1;
+	}
+}
+
 
 function determineOptimalTimes(id){
 	/*
@@ -85,7 +94,120 @@ function determineOptimalTimes(id){
 	We can then break the amount of time that the assignment is going to take into chunks.
 	Then we can go through a list of open work times and assign the chunks in any open spots before the due date.
 	*/
-	print('we gotta do this')
+	getAssignments(id, function(assignments){
+
+		for (var i = 0; i < assignments.length; i++) {
+			var date = new Date();
+			var current_day = date.getDate();
+			var due_date = assignments[i].due.getDate();
+			var time_left = due_date - current_day;
+			var priority = (time_left * 24) - (assignments[i].numhours);
+			assignments.priority = priority
+
+			assignments.sort(function(a,b){
+				return b.priority - a.priority;
+			});
+		}
+
+		getPreferences(id, function(preferences){
+			var start_hour = preferences[preferences.length - 1].start_study;
+			var end_hour = preferences[preferences.length - 1].end_study;
+		});
+
+		var today = new Date();
+
+		start_work = start_hour;
+		for (var i = 0; i < assignments.length; i++){
+			var numDays = assignments[i].due.getDate() - today.getDate();
+			var hours_to_complete = numDays * (end_hour - start_hour);
+			if (hours_to_complete < numHours){
+				return "Not enough hours to complete assignment.";
+			}
+
+
+			var current_date = new Date();
+			study_left = end_hour - start_hour;
+			//current_date.setHours(start_work);
+			if (assignments.numhours < study_left){
+				start_date = current_date.setHours(start_work);
+				end_date = current_date.setHours(start_work + assignments[i].numhours)
+				assignments.worktime[0] = start_date;
+				assignments.worktime[1] = end_date;
+				start_work = start_work + assignments[i].numhours;
+			} else {
+				start_date = current_date.setHours(start_work);
+				assignments.worktime[0] = start_date;
+				hours_left = end_hour - start_work;
+				additional_hours = assignments[i].numhours - hours_left;
+				end_date = start_date.setDate(start_date.getDate() + 1);
+				end_date.setHours(start_hour + additional_hours)
+				assignments.worktime[1] = end_date;
+				start_work = end_date.getHours();
+			}
+		}
+
+	});
+
+	//A bunch of junkyard code that I originally wrote but ended up changing my approach.
+	//I was using it as a reference so I haven't deleted it yet.
+	/*
+	Assignment:
+	[0] title
+	[1] due date
+	[2] num hours needed
+	[3] priority
+	[4] work date
+	[5] work time
+	*/
+	/*
+	for (var i = 0; i < assignments.length; i++) {
+		var single_assign = [];
+		single_assign.push(assignments[i].title);
+		single_assign.push(assignments[i].due);
+		single_assign.push(assignments[i].numhours);
+		single_assign.push(0);
+		single_assign.push(0);
+		assign_arr.push(single_assign);
+	}
+
+	var assign_arr = [];
+	var date = new Date();
+	var current_day = date.getDate();
+	for (var i = 0; i < assign_arr.length; i++) {
+		due_date = assign_arr[i][1].getDate();
+		var time_left = due_date - current_day;
+		var priority = (time_left * 24) - (assign_arr[i][2]);
+		assign_arr[i][3] = priority;
+	}
+
+	var assign_sorted = assign_arr.sort(sort_by_priority);
+
+
+
+	var current_date = new Date();
+	for (var i = 0; i < assign_sorted.length; i++){
+		while (assign_sorted[i][2] > 0){
+			study_left = end_hour - start_hour;
+			var start_work = start_hour;
+			if (assign_sorted[i][2] < study_left){
+				current_date.setHours(start_work);
+				assign_sorted[i][4] = current_date;
+				start_work = start_work + assign_sorted[i][2];
+				assign_sorted[i][2] = 0;
+			} else {
+				
+
+				current_date.setDate(current_date.getDate()+1)
+				start_work = start_hour;
+				if (assign_sorted[i][2] < study_left){
+					current_date.setHours(start_hour);
+					assign_sorted[i][4] = current_date;
+					start_hour = start_hour + assign_sorted[i][2];
+				}
+			}
+		}
+	}*/
+
 }
 
 function addEvent(id, data){
