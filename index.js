@@ -219,14 +219,14 @@ function addEvent(id, data){
 	});
 }
 
-function getEvents(id){
+function getEvents(id, callback){
 	MongoClient.connect(url, function(e, db){
 		var dbd = db.db("events")
 		if (e) throw e;
   		dbd.collection(id).find().toArray(function(err, events){
   			if(err) throw err;
   			db.close();
-  			return events;
+  			callback(events)
   		});
 	})
 }
@@ -253,14 +253,14 @@ function getAssignments(id, callback){
 }
 
 
-function getPreferences(id){
+function getPreferences(id, callback){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("preferences")
 		if (err) throw err;
   		dbd.collection(id).find().toArray(function(err, p){
   			if(err) throw err;
   			db.close();
-  			return p[p.length -1];
+  			callback(p[p.length -1])
   		});
 	})
 }
@@ -274,7 +274,7 @@ function setPreferences(id, data){
 	});
 }
 
-function addUser(data, callback){
+function addUser(data, callback){console.log(data)
 	if (data.email &&
 	  data.password) {
 	  var userData = {
@@ -287,20 +287,42 @@ function addUser(data, callback){
 	  User.create(userData, function (err, user) {
 	    if (err) {console.log('error--')
 	    	console.log(err)
-	      callback(-1)
+	      	callback(-1)
 	    } else {
-	    	console.log('woah')
 	    	console.log(user._id)
 	        callback(user._id)
+	        setPreferences(user._id.toString(), {"startstudy": 15, "endstudy": 19, "updates": null, "minstudytime": 0.5, "maxstudytime": 3})
 	    }
 	  });
+
+
+	}else{
+		callback(-1)
 	}
 }
 
 app.use('/website', express.static('website'))
 
 
-app.get('/assignments', function(req, res){console.log('assignments')
+app.get('/calendar', function(req, res){console.log('calendar')
+	if(req.session && req.session.id && req.session.userId) {
+		getAssignments(req.session.userId.toString(), function(assignments){
+			assignments.map(function(x) {
+				y = x
+				y.start = x.due
+			})
+			console.log(assignments)
+			getEvents(req.session.userId.toString(), function(events){
+				console.log(events)
+				res.send(assignments.concat(events))
+			})
+		})
+	} else {
+		res.send('not today')
+	}
+})
+
+app.get('/assignments', function(req, res){console.log('assignments') 
 	if (req.session && req.session.id && req.session.userId) {
 		getAssignments(req.session.userId.toString(), function(assignments){
 			res.send(assignments)
@@ -310,7 +332,20 @@ app.get('/assignments', function(req, res){console.log('assignments')
 	}
 })
 
-app.get('/events', function(req, res){
+app.get('/sorted_assignments', function(req, res){console.log('/sorted_assignments')
+	if (req.session && req.session.id && req.session.userId) {
+		getAssignments(req.session.userId.toString(), function(assignments){
+			assignments.sort(function(a,b){
+			  return b.due - a.due;
+			});
+			res.send(assignments)
+		})
+	} else {
+		res.send('not today')
+	}
+})
+
+app.get('/events', function(req, res){ //sort this by time
 	if (req.session && req.session.id && req.session.userId) {
 		getEvents(req.session.userId.toString(), function(assignments){
 			res.send(assignments)
@@ -333,10 +368,16 @@ app.get('/preferences', function(req, res){
 
 app.post('/add_assignment', function(req,res){console.log("add_assignment")
 	if (req.session && req.session.id && req.session.userId) {
-		req.body.repeating = ""
-		addAssignment(req.session.userId, req.body)
+		data = {"repeating": "",
+			"due": new Date(req.body.date),
+			"numhours": parseFloat(req.body.time),
+			"description": req.body.notes,
+			"title": req.body.title,
+			"numhourscompleted": 0.0,
+			"worktime": []}
+		addAssignment(req.session.userId, data)
 	} else {
-		res.redirect('/sign_in')
+		res.send('not today')
 	}
 })
 
@@ -344,16 +385,50 @@ app.post('/set_preferences', function(req, res){console.log('set_preferences')
 	if (req.session && req.session.id && req.session.userId) {
 		setPreferences(req.session.userId, req.body)
 	} else {
-		res.redirect('/sign_in')
+		res.send('not today')
+	}
+})
+
+app.post('/add_event', function(req, res){console.log('add_event')
+	if (req.session && req.session.id && req.session.userId) {
+		data = {
+			"date": req.body.eventdate,
+			"description": req.body.eventdescription,
+			"title": req.body.eventname,
+			"notifications": null,
+			"startTime": req.body.starttime ,
+			"endTime": req.body.endtime
+		}
+
+		data.repeating = ""
+		if(req.body.repmonday){data.repeating += "M"}
+		if(req.body.reptuesday){data.repeating += "T"}
+		if(req.body.repwednesday){data.repeating += "W"}
+		if(req.body.repthursday){data.repeating += "Th"}
+		if(req.body.repfriday){data.repeating += 'F'}
+		if(req.body.repsaturday){data.repeating += 'S'}
+		if(req.body.repsunday){data.repeating += 'Su'}
+		console.log(data)
+		addEvent(req.session.userId, data)
+	} else {
+		res.send('not today')
 	}
 })
 
 app.post('/sign_up', function(req, res){console.log('sign_up')
-	userId = addUser(req.body)
-	if(userId != -1){
-		console.log('sign up worked')
-		req.session.userId = userId
+	if(req.body.email && req.body.password && req.body.password == req.body.passwordConf){
+		console.log('inside')
+		addUser(req.body, function(userId){
+			if(userId != -1){
+				console.log('sign up worked')
+				// req.session.userId = userId
+				// res.redirect('/website/index.html')
+			}else{
+				// res.redirect('/website/register.html')
+			}
+		})
 	}
+	// res.redirect('/website/register.html')
 })
 
 app.post('/sign_in', function(req, res){ console.log('sign_in')
@@ -386,6 +461,10 @@ app.get('/logout', function(req, res, next) {
   }
 });
 
+app.get('*', function(req, res){
+  res.status(404).send('404 Error');
+});
+
 
 var server = app.listen(8000, function () {
     console.log("Listening on port %s...", server.address().port);
@@ -393,7 +472,7 @@ var server = app.listen(8000, function () {
 
 function populateDatabase(){
 	var today = new Date()
-	user1 = addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'rr@rr.com', password:'woah', passwordConf:'woah'}, function(usr1_id){
+	addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'rr@rr.com', password:'woah', passwordConf:'woah'}, function(usr1_id){
 		addAssignment(usr1_id.toString(), {completed:false, due: today, repeating:'', description:'test assignments', title:'test title',
 			notifications: null, numhours:5, worktime:null}) //user is yell@yell.com with password yell
 		addAssignment(usr1_id.toString(), {completed:false, due:  new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), repeating:'', description:'test assignments 2', title:'test title 2',
@@ -405,6 +484,11 @@ function populateDatabase(){
 }
 
 // populateDatabase()
+
+
+// $('#calendar').fullCalendar({
+//   schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives'
+// });
 
 //use this to authenticate on gets and puts
 // UserSchema.statics.authenticate = function (email, password, callback) {
@@ -426,6 +510,8 @@ function populateDatabase(){
 //       })
 //     });
 // }
+
+
 
 
 

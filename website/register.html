@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Register</title>
+    <title>Register</title>
 
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -93,7 +93,9 @@
             passwordConf: $('#confirmPassword').val(),
             firstName: $('#firstName').val(),
             lastName: $('#lastName').val() } 
-          $.post("/sign_up", data)
+          if(data.password == data.passwordConf){
+            $.post("/sign_up", data)
+          }else{console.log('passwords dont match')}
         });
       });
     </script>

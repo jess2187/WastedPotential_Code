@@ -117,7 +117,7 @@ function addUser(data){
 	    email: data.email,
 	    password: data.password,
 	    passwordConf: data.passwordConf
-	  } d
+	  }
 	  User.create(userData, function (err, user) {
 	    if (err) {
 	      return -1
@@ -136,6 +136,8 @@ function populateDatabase(){
 			description: 'test events', title: 'test title', repeating: '', notifications: null})
 }
 
+console.log(getAssignments("5bff573acbc3ef0f1aa253eb"))
+
 
 /* DB schema
 Every user has one or none preferences, events, and assignments collection. Each preferences, events, and assignments collection has one and only one user.
@@ -146,11 +148,11 @@ Collection: users
 
 DB: preferences
 Collection: user.id
-	Document: studytime, updates,
+	Document: startstudy, endstudy, updates, minstudytime, maxstudytime, 
 
 DB: events
 Collection: user.id
-	Document: start - date, end - date, description - str, title - str , repeating, notifications
+	Document: date - datestartTime - time, endTime - time, description - str, title - str , repeating, notifications
 
 DB: assignments
 Collection: user.id 

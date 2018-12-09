@@ -2,7 +2,6 @@
 <html lang="en">
 
   <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,6 +24,19 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
+
+    <style>
+      #calendar {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+    </style>
+
+    <link href='fullcalendar/fullcalendar.min.css' rel='stylesheet' />
+    <link href='fullcalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <script src='lib/moment.min.js'></script>
+    <script src='lib/jquery.min.js'></script>
+    <script src='fullcalendar/fullcalendar.min.js'></script>
 
   </head>
 
@@ -55,19 +67,17 @@
         <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
-            <span class="badge badge-danger">9+</span>
+            <!-- <span class="badge badge-danger">9+</span> -->
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown" id="todayDropdown">
+            <a class="dropdown-item" href="#">Due today! Submit...</a>
+            <div class="dropdown-divider" ></div>
           </div>
         </li>
-        <li class="nav-item dropdown no-arrow mx-1">
+        <!-- <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-envelope fa-fw"></i>
-            <span class="badge badge-danger">7</span>
+             <span class="badge badge-danger">7</span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
             <a class="dropdown-item" href="#">Action</a>
@@ -75,14 +85,13 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
-        </li>
+        </li> -->
         <li class="nav-item dropdown no-arrow">
           <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
             <a class="dropdown-item" href="Settings.html">Settings</a>
-            <a class="dropdown-item" href="#">Activity Log</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
           </div>
@@ -110,10 +119,24 @@
           </a>
         </li>
 
-        <li class="nav-item dropdown">
+        <li class="nav-item">
+          <a class="nav-link" href="Assignments.html">
+            <i class="fas fa-file-alt"></i>
+            <span>Assignments</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="Events.html">
+            <i class="fas fa-calendar-check"></i>
+            <span>Events</span>
+          </a>
+        </li>
+
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-book"></i>
-            <span>Courses</span>
+            <span>Assignments</span> 
           </a>
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
 
@@ -123,9 +146,9 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="courses.html">Add Course</a>
           </div>
-        </li>
+        </li> -->
 
-        <li class="nav-item dropdown">
+<!--         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
             <span>Pages</span>
@@ -140,10 +163,9 @@
             <a class="dropdown-item" href="404.html">404 Page</a>
             <a class="dropdown-item" href="blank.html">Blank Page</a>
           </div>
-        </li>
-      
+        </li> -->
         
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
             <span>Tables</span>
@@ -153,7 +175,7 @@
             <a class="dropdown-item" href="Assignments.html">Assignments</a>
             <a class="dropdown-item" href="AssignmentWorktimes.html">Assignment Work Times</a>
           </div>
-        </li>
+        </li> -->
       </ul>
 
       <div id="content-wrapper">
@@ -165,34 +187,34 @@
             <li class="breadcrumb-item">
               <a href="#">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Overview</li>
+            <li class="breadcrumb-item active">Calendar</li>
           </ol>
+          <form>
+            <form>
+              <div class="form-group">
+                <label for="radio">Minimum Assignment Work Times:</label><br>
+                <label class="radio"><input id="minstudytime" type="radio" name="optradio">30 Minutes</label><br>
+                <label class="radio"><input id="minstudytime" type="radio" name="optradio">1 Hour</label><br>
+                <label class="radio"><input id="minstudytime" type="radio" name="optradio">2 Hours</label><br>
+                <label class="radio"><input id="minstudytime" type="radio" name="optradio">3+ Hours</label><br>
+              </div>
+            </form>
+            
+            <form>
+              <div class="form-group">
+                <label for="radio">Maximum Assignment Work Times:</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">1 Hour</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">2 Hours</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">3 Hours</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">4 Hours</label><br>
+                <label class="radio"><input id="maxstudytime" type="radio" name="optradio">5+ Hours</label><br>
+              </div>
+            </form>
 
-          <form action="index.html">
-            <div class="form-group">
-              <label for="Name">Name:</label>
-              <input type="name" class="form-control" id="name">
-            </div>
 
-            <div class="form-group">
-              <label for="radio">Minimum Assignment Work Times:</label><br>
-              <label class="radio"><input type="radio" name="optradio">30 Minutes</label><br>
-              <label class="radio"><input type="radio" name="optradio">1 Hour</label><br>
-              <label class="radio"><input type="radio" name="optradio">2 Hours</label><br>
-              <label class="radio"><input type="radio" name="optradio">3+ Hours</label><br>
-            </div>
-            <div class="form-group">
-              <label for="radio">Maximum Assignment Work Times:</label><br>
-              <label class="radio"><input type="radio" name="optradio">1 Hour</label><br>
-              <label class="radio"><input type="radio" name="optradio">2 Hours</label><br>
-              <label class="radio"><input type="radio" name="optradio">3 Hours</label><br>
-              <label class="radio"><input type="radio" name="optradio">4 Hours</label><br>
-              <label class="radio"><input type="radio" name="optradio">5+ Hours</label><br>
-            </div>
-
-            <p><label>Lastest Study time(between 3pm and 3am): <input type=time min="15:00" max="3:00" step="1800"></label></p>
-            <p><label>Earliest Study time(between 3am and 3pm): <input type=time min="3:00" max="15:00" step="1800"></label></p>
-            <input type="submit" value="Submit">
+            <p><label>Earliest Time to Start Studying(between 3am and 3pm): <input id="startstudy" type=time min="3:00" max="15:00" step="1800"></label></p>
+            <p><label>Latest Time to Stop Studying(between 3pm and 3am): <input id="endstudy" type=time min="15:00" max="3:00" step="1800"></label></p>
+            <input type="submit" id="submitSettingsButton" value="Submit">
             </form>
 
         <!-- Sticky Footer -->
@@ -255,6 +277,26 @@
     <!-- Demo scripts for this page-->
     <script src="js/demo/datatables-demo.js"></script>
     <script src="js/demo/chart-area-demo.js"></script>
+
+    <script>
+      $(function(){
+        $.ajax({url: "/preferences", success: function(result){
+            console.log('incoming settings')
+            console.log(result)
+          }});
+        $("#submitSettingsButton").click(function(){
+          data = {
+             minstudytime:$('#minstudytime').val(),
+             maxstudytime: $('#maxstudytime').val(),
+             startstudy: $('#startstudy').val(),
+             endstudy: $('#endstudy').val()} 
+           console.log(data)
+           $.ajax({url: "/set_preferences", method: "post", data: data, success: function(result){
+              console.log(result)
+           }});
+        })
+      });
+    </script>
 
   </body>
 
