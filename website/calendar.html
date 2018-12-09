@@ -330,8 +330,15 @@
     <script src="js/sb-admin.min.js"></script>
 
     <script>
-      $(function(){var current = new Date()
-       
+      $(function(){var current = new Date()    
+        $.ajax({url:"/calendar", success: function(result){
+          $('#calendar').fullCalendar({
+            defaultDate:  current.getFullYear() + '-' + (current.getMonth()+1)+ '-' + current.getDate(),
+            editable: false,
+            eventLimit: true,
+            events: result
+          });
+        }})  
         $.ajax({url: "/sorted_assignments", success: function(result){
             console.log(result)
             if(result == "not today"){
@@ -348,12 +355,7 @@
                   $("#dashboardAssignmentList").append("<li>" + result[i].title + "</li>")
                 }
               }console.log(result)
-               $('#calendar').fullCalendar({
-                  defaultDate:  current.getFullYear() + '-' + (current.getMonth()+1)+ '-' + current.getDate(),
-                  editable: false,
-                  eventLimit: true,
-                  events: result
-                });
+               
             }
           }});
       });

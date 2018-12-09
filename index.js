@@ -182,6 +182,24 @@ function addUser(data, callback){console.log(data)
 app.use('/website', express.static('website'))
 
 
+app.get('/calendar', function(req, res){console.log('calendar')
+	if(req.session && req.session.id && req.session.userId) {
+		getAssignments(req.session.userId.toString(), function(assignments){
+			assignments.map(function(x) {
+				y = x
+				y.start = x.due
+			})
+			console.log(assignments)
+			getEvents(req.session.userId.toString(), function(events){
+				console.log(events)
+				res.send(assignments.concat(events))
+			})
+		})
+	} else {
+		res.send('not today')
+	}
+})
+
 app.get('/assignments', function(req, res){console.log('assignments') 
 	if (req.session && req.session.id && req.session.userId) {
 		getAssignments(req.session.userId.toString(), function(assignments){
@@ -196,7 +214,7 @@ app.get('/sorted_assignments', function(req, res){console.log('/sorted_assignmen
 	if (req.session && req.session.id && req.session.userId) {
 		getAssignments(req.session.userId.toString(), function(assignments){
 			assignments.sort(function(a,b){
-			  return b.due - a.date;
+			  return b.due - a.due;
 			});
 			res.send(assignments)
 		})

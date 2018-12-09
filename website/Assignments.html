@@ -379,12 +379,6 @@
     <script>
       var current = new Date()
       $(function(){
-        $('#assignmentsTable').dataTable( {
-            "language": {
-                "zeroRecords": null,
-                "emptyTable": null
-            }
-         });
         $.ajax({url: "/assignments", success: function(result){
           console.log(result)
           if(result == "not today"){
@@ -400,6 +394,7 @@
               $("#dataBody").append("</tr>")
             }
           }
+          //$('#assignmentsTable').DataTable();
         }})
         $("#submitAssignmentButton").click(function(){
           data = {
