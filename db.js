@@ -154,6 +154,6 @@ Collection: user.id
 
 DB: assignments
 Collection: user.id 
-	Document: completed - boolean, due - date, repeating-str, description - str, title - str, notifications, numhours - how long they ahve to work on it, worktime - free time assigned to working on this 
+	Document: completed - boolean, due - date, repeating-str, description - str, title - str, notifications, numhours - how long they ahve to work on it, worktime - free time assigned to working on this, priority - int, ranking of priority of assignment 
 */
 
