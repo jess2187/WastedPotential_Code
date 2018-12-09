@@ -331,11 +331,7 @@
 
     <script>
       $(function(){var current = new Date()
-        $('#calendar').fullCalendar({
-          defaultDate:  current.getFullYear() + '-' + (current.getMonth()+1)+ '-' + current.getDate(),
-          editable: false,
-          eventLimit: true
-        });
+       
         $.ajax({url: "/sorted_assignments", success: function(result){
             console.log(result)
             if(result == "not today"){
@@ -343,15 +339,21 @@
             }else{
               for (var i = result.length - 1; i >= 0; i--) {
                 var d = new Date(result[i].due)
+                result[i].start = result[i].due.toString()
                 var event_data = {'start': result[i].due, 'title': result[i].title}
-                $('#calendar').fullCalendar('renderEvent', event_data)
                 if(d.getDate()== current.getDate()){
                   $("#todayDropdown").append("<a class=\"dropdown-item\">"+result[i].title+"</a>")
                 }
                 if(d > current){
                   $("#dashboardAssignmentList").append("<li>" + result[i].title + "</li>")
                 }
-              }
+              }console.log(result)
+               $('#calendar').fullCalendar({
+                  defaultDate:  current.getFullYear() + '-' + (current.getMonth()+1)+ '-' + current.getDate(),
+                  editable: false,
+                  eventLimit: true,
+                  events: result
+                });
             }
           }});
       });
