@@ -129,20 +129,40 @@ function determineOptimalTimes(id){
 			study_left = end_hour - start_hour;
 			//current_date.setHours(start_work);
 			if (assignments.numhours < study_left){
-				start_date = current_date.setHours(start_work);
-				end_date = current_date.setHours(start_work + assignments[i].numhours)
-				assignments.worktime[0] = start_date;
-				assignments.worktime[1] = end_date;
+				var start_date = current_date.setHours(start_work);
+				var end_date = current_date.setHours(start_work + assignments[i].numhours);
+				var worktime;
+				worktime.start_time = start_date;
+				worktime.end_time = end_date;
+				assignments[i].worktime[0] = worktime;
 				start_work = start_work + assignments[i].numhours;
 			} else {
-				start_date = current_date.setHours(start_work);
-				assignments.worktime[0] = start_date;
-				hours_left = end_hour - start_work;
-				additional_hours = assignments[i].numhours - hours_left;
-				end_date = start_date.setDate(start_date.getDate() + 1);
-				end_date.setHours(start_hour + additional_hours)
-				assignments.worktime[1] = end_date;
-				start_work = end_date.getHours();
+				hours_to_assign = assignments[i].numhours;
+				index = 0;
+				while (hours_to_assign > 0){
+					if (index > 0){
+						start_work = start_hour;
+					}
+					hours_left = end_hour - start_work;
+					var worktime;
+					var start_date = current_date.setHours(start_work);
+					worktime.start_time = start_date;
+					if (hours_to_assign > hours_left){
+						worktime.end_time = end_hour;
+						hours_to_assign = assignments[i].numhours - (end_hour - start_work);
+					} else {
+						worktime.end_time = start_date.setHours(start_date.getHours() + hours_to_assign);
+						hours_to_assign = 0;
+					}
+					
+					assignments[i].worktime[index] = worktime;
+
+					index++;
+
+					current_date.setDate(start_date.getDate() + 1);
+
+
+				}
 			}
 		}
 
@@ -206,7 +226,13 @@ function determineOptimalTimes(id){
 				}
 			}
 		}
-	}*/
+	}
+
+					additional_hours = assignments[i].numhours - hours_left;
+					end_date = start_date.setDate(start_date.getDate() + 1);
+					end_date.setHours(start_hour + additional_hours)
+					assignments.worktime[1] = end_date;
+					start_work = end_date.getHours();*/
 
 }
 
