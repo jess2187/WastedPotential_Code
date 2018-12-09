@@ -186,11 +186,14 @@ app.get('/calendar', function(req, res){console.log('calendar')
 	if(req.session && req.session.id && req.session.userId) {
 		getAssignments(req.session.userId.toString(), function(assignments){
 			assignments.map(function(x) {
-				y = x
-				y.start = x.due
+				x.start = x.due.toString()
 			})
 			console.log(assignments)
 			getEvents(req.session.userId.toString(), function(events){
+				assignments.map(function(x) {
+					x.start = x.startTime
+					x.end = x.endTime
+				})
 				console.log(events)
 				res.send(assignments.concat(events))
 			})
