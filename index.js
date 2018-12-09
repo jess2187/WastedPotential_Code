@@ -182,7 +182,7 @@ function addUser(data, callback){console.log(data)
 app.use('/website', express.static('website'))
 
 
-app.get('/assignments*', function(req, res){console.log('assignments') 
+app.get('/assignments', function(req, res){console.log('assignments') 
 	if (req.session && req.session.id && req.session.userId) {
 		getAssignments(req.session.userId.toString(), function(assignments){
 			res.send(assignments)
@@ -276,17 +276,19 @@ app.post('/add_event', function(req, res){console.log('add_event')
 })
 
 app.post('/sign_up', function(req, res){console.log('sign_up')
-	if(req.body.password == req.body.passwordConf){
+	if(req.body.email && req.body.password && req.body.password == req.body.passwordConf){
+		console.log('inside')
 		addUser(req.body, function(userId){
 			if(userId != -1){
 				console.log('sign up worked')
-				req.session.userId = userId
-				res.redirect('/website/index.html')
+				// req.session.userId = userId
+				// res.redirect('/website/index.html')
 			}else{
-				res.redirect('/website/register.html')
+				// res.redirect('/website/register.html')
 			}
 		})
-	}res.redirect('/website/register.html')
+	}
+	// res.redirect('/website/register.html')
 })
 
 app.post('/sign_in', function(req, res){ console.log('sign_in')

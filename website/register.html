@@ -93,7 +93,9 @@
             passwordConf: $('#confirmPassword').val(),
             firstName: $('#firstName').val(),
             lastName: $('#lastName').val() } 
-          $.post("/sign_up", data)
+          if(data.password == data.passwordConf){
+            $.post("/sign_up", data)
+          }else{console.log('passwords dont match')}
         });
       });
     </script>

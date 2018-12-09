@@ -377,27 +377,6 @@
     <script src="js/demo/datatables-demo.js"></script>
 
     <script>
-      $(function(){
-        $.ajax({url: "/assignments", success: function(result){
-            console.log('incoming assignments')
-            console.log(result)
-          }});
-        $("#submitAssignmentButton").click(function(){
-          data = {
-             title:$('#title').val(),
-             date:$('#date').val(),
-             notes: $('#notes').val(),
-             course: $('#course').val(),
-             time: $('#time').val()} 
-           console.log(data)
-           $.ajax({url: "/add_assignment", method: "post", data: data, success: function(result){
-              console.log(result)
-              console.log('hiiii')
-           }});
-        })
-      });
-    </script>
-    <script>
       var current = new Date()
       $(function(){
         $('#assignmentsTable').dataTable( {
@@ -422,6 +401,19 @@
             }
           }
         }})
+        $("#submitAssignmentButton").click(function(){
+          data = {
+             title:$('#title').val(),
+             date:$('#date').val(),
+             notes: $('#notes').val(),
+             course: $('#course').val(),
+             time: $('#time').val()} 
+           console.log(data)
+           $.ajax({url: "/add_assignment", method: "post", data: data, success: function(result){
+              console.log(result)
+              console.log('hiiii')
+           }});
+        })
       });
     </script>
   </body>

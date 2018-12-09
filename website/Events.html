@@ -304,11 +304,24 @@
     <script src="js/demo/datatables-demo.js"></script>
 
     <script>
+      var current = new Date()
       $(function(){
         $.ajax({url: "/events", success: function(result){
-            console.log('incoming settings')
-            console.log(result)
-          }});
+          if(result == "not today"){
+            window.location.href="/website/login.html"; 
+          }else{
+            for (var i = result.length - 1; i >= 0; i--) {
+              $("#dataBody").append("<tr>")
+              $("#dataBody").append("<th>" + result[i].date + "</th>")
+              $("#dataBody").append("<th>" + result[i].startTime + "</th>")
+              $("#dataBody").append("<th>" + result[i].endTime + "</th>")
+              $("#dataBody").append("<th>" + result[i].title + "</th>")
+              $("#dataBody").append("<th>" + result[i].description + "</th>")
+              $("#dataBody").append("<th>" + result[i].repeating + "</th>")
+              $("#dataBody").append("</tr>")
+            }
+          }
+        }})
         $("#submitEventButton").click(function(){
           data = {
              eventname:$('#eventname').val(),
@@ -329,25 +342,6 @@
               console.log(result)
            }});
         })
-      });
-    </script>
-
-    <script>
-    var current = new Date()
-      $(function(){
-        $.ajax({url: "/events", success: function(result){
-          for (var i = result.length - 1; i >= 0; i--) {
-            $("#dataBody").append("<tr>")
-            $("#dataBody").append("<th>" + result[i].date + "</th>")
-            $("#dataBody").append("<th>" + result[i].startTime + "</th>")
-            $("#dataBody").append("<th>" + result[i].endTime + "</th>")
-            $("#dataBody").append("<th>" + result[i].title + "</th>")
-            $("#dataBody").append("<th>" + result[i].description + "</th>")
-            $("#dataBody").append("<th>" + result[i].repeating + "</th>")
-            $("#dataBody").append("</tr>")
-          }
-        }})
-
       });
     </script>
   </body>
