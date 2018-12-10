@@ -33,7 +33,7 @@ test('add assignment', done => {
 })
 
 test('add event', done => {
-	index.addAssignment(_id.toString(), {start: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), end: new Date(today.getFullYear(), today.getMonth(), today.getDate()+8), repeating:'', description:'test assignments 2', title:'test title 2',
+	index.addEvent(_id.toString(), {start: new Date(today.getFullYear(), today.getMonth(), today.getDate()+7), end: new Date(today.getFullYear(), today.getMonth(), today.getDate()+8), repeating:'', description:'test assignments 2', title:'test title 2',
 				notifications: null})
 	setTimeout(function(){index.getEvents(_id.toString(), function(assignments){
 		expect(assignments.length).toBe(1)
