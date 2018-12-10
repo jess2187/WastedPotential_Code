@@ -341,7 +341,7 @@ const addUser = function(data, callback){console.log(data)
 	    } else {
 	    	console.log(user._id)
 	        callback(user._id)
-	        setPreferences(user._id.toString(), {"startstudy": 15, "endstudy": 19, "updates": null, "minstudytime": 0.5, "maxstudytime": 3})
+	        setPreferences(user._id.toString(), {"startstudy": "15:00", "endstudy": "19:00", "updates": null, "minstudytime": 0.5, "maxstudytime": 3})
 	    }
 	  });
 
