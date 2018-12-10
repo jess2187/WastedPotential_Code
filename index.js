@@ -74,17 +74,8 @@ module.exports = User;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-function sort_by_priority(a, b){
-	if (a[3] === b[3]){
-		return 0;
-	}
-	else {
-		return (a[3] < b[3]) ? -1 : 1;
-	}
-}
 
-
-function determineOptimalTimes(id){
+const determineOptimalTimes = function(id, callback){
 	/*
 	Take the time left before due date and subtract estimate of hours to complete. 
 	Call that the assignments "score."
@@ -95,7 +86,6 @@ function determineOptimalTimes(id){
 	Then we can go through a list of open work times and assign the chunks in any open spots before the due date.
 	*/
 	getAssignments(id, function(assignments){
-
 		for (var i = 0; i < assignments.length; i++) {
 			var date = new Date();
 			var current_day = date.getDate();
@@ -108,57 +98,76 @@ function determineOptimalTimes(id){
 				return b.priority - a.priority;
 			});
 		}
-
 		getPreferences(id, function(preferences){
-			var start_hour = preferences[preferences.length - 1].start_study;
-			var end_hour = preferences[preferences.length - 1].end_study;
+			var start_hour = preferences.startstudy;
+			var end_hour = preferences.endstudy;
 
 			var today = new Date();
-
+			var current_date = new Date()
 			start_work = start_hour;
-			for (var i = 0; i < assignments.length; i++){
+			current_date =  new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate(), parseInt(start_work.split(':')[0])-7, parseInt(start_work.split(':')[1]))
+			console.log(current_date)
+			for (var i = 0; i < assignments.length; i++){ console.log(i)
 				var numDays = assignments[i].due.getDate() - today.getDate();
 				var hours_to_complete = numDays * (end_hour - start_hour);
-				if (hours_to_complete < numHours){
+				if (hours_to_complete < assignments[i]["numhours"]){
+					console.log('not enough hours to complete assignmetn')
 					return "Not enough hours to complete assignment.";
 				}
-			var current_date = new Date();
-			study_left = end_hour - start_hour;
-			//current_date.setHours(start_work);
-			if (assignments.numhours < study_left){
-				var start_date = current_date.setHours(start_work);
-				var end_date = current_date.setHours(start_work + assignments[i].numhours);
-				var worktime;
-				worktime.start_time = start_date;
-				worktime.end_time = end_date;
-				assignments[i].worktime[0] = worktime;
-				start_work = start_work + assignments[i].numhours;
-			} else {
-				hours_to_assign = assignments[i].numhours;
-				index = 0;
-				while (hours_to_assign > 0){
-					if (index > 0){
-						start_work = start_hour;
-					}
-					hours_left = end_hour - start_work;
-					var worktime;
+				study_left = end_hour - start_hour;
+				//current_date.setHours(start_work);
+				if (assignments[i].numhours < study_left){console.log('lolwohalol')
 					var start_date = current_date.setHours(start_work);
-					worktime.start_time = start_date;
-					if (hours_to_assign > hours_left){
-						worktime.end_time = end_hour;
-						hours_to_assign = assignments[i].numhours - (end_hour - start_work);
-					} else {
-						worktime.end_time = start_date.setHours(start_date.getHours() + hours_to_assign);
-						hours_to_assign = 0;
-					}
+					var end_date = current_date.setHours(start_work + assignments[i].numhours);
+					console.log(start_date)
+					console.log(end_date)
+					var worktime = {'start_time': start_date, 'end_time': end_date};
+					assignments[i].worktime[0] = worktime;
+					start_work = start_work + assignments[i].numhours;
+				} else {
+					hours_to_assign = assignments[i].numhours;
+					index = 0;
+					while (hours_to_assign > 0){
+						if (index > 0){
+							start_work = start_hour;
+						}
+						
+						hours_left = (parseInt(end_hour.split(':')[0])-7 + parseInt(end_hour.split(':')[1])/60) - (current_date.getHours() + current_date.getMinutes()/60);
 					
-					assignments[i].worktime[index] = worktime;
+						
+						var start_date = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate(), current_date.getHours(), current_date.getMinutes())
+						var end_time;
+						console.log('hours')
+						console.log(parseInt(end_hour.split(':')[0])-7 + parseInt(end_hour.split(':')[1])/60)
+						console.log(current_date.getHours() + current_date.getMinutes()/60)
+						console.log(hours_to_assign)
+						console.log(hours_left)
+						if (hours_to_assign > hours_left){ console.log('hihihi')
+							end_time = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate(),  parseInt(end_hour.split(':')[0])-7, end_hour.split(':')[1])
+							hours_to_assign = hours_to_assign - hours_left;
+							current_date = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate()+1,  parseInt(start_work.split(':')[0])-7, start_work.split(':')[1])
+						} else {
+							end_time = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate(),  current_date.getHours()+hours_to_assign , current_date.getMinutes())
+							hours_to_assign = 0;
+							current_date = end_time
+						}
 
-					index++;
-
-					current_date.setDate(start_date.getDate() + 1);
+						console.log('----------')
+						console.log(assignments[i])
+						
+						console.log(current_date)
+						var worktime = {'start_time': start_date, 'end_time': end_time};
+						console.log(worktime)
+						assignments[i].worktime[index] = worktime;
+						index++;
+						console.log(end_time)
+						
+						console.log(current_date)
+					}
 				}
 			}
+			console.log(assignments)
+			callback(assignments)
 		});
 	});
 
@@ -230,7 +239,7 @@ function determineOptimalTimes(id){
 
 }
 
-function addEvent(id, data){
+const addEvent = function(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("events")
 		if (err) throw err;
@@ -239,7 +248,7 @@ function addEvent(id, data){
 	});
 }
 
-function getEvents(id, callback){
+const getEvents = function(id, callback){
 	MongoClient.connect(url, function(e, db){
 		var dbd = db.db("events")
 		if (e) throw e;
@@ -251,21 +260,21 @@ function getEvents(id, callback){
 	})
 }
 
-function setAssignment(id, data){
+const setAssignment = function(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("assignments")
 		if (err) throw err;
 		var s = new ObjectId(data._id)
 		var q = {'_id': s}
 		var nv = {$set:data}
-		dbd.collection('sessions').updateOne(q, nv, function(err, result){
+		dbd.collection(id).updateOne(q, nv, function(err, result){
 			if(err) throw err
 			db.close()
 		});
 	})
 }
 
-function addAssignment(id, data){
+const addAssignment = function(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("assignments")
 		if (err) throw err;
@@ -274,20 +283,27 @@ function addAssignment(id, data){
 	});
 }
 
-function getAssignments(id, callback){
-	MongoClient.connect(url, function(err, db){
-		var dbd = db.db("assignments")
-		if (err) throw err;
-  		dbd.collection(id).find().toArray(function(err, a){
-  			if(err) throw err;
-  			db.close();
-  			callback(a);
-  		});
-	})
+const getAssignments = function(id, callback){
+	// determineOptimalTimes(id, function(assignments){
+	// 	console.log('woah assign')
+	// 	console.log(assignments)
+		// for(var i = assignments.length-1; i >= 0; i--){
+		// 	setAssignment(id, assignments[i])
+		// }
+		MongoClient.connect(url, function(err, db){
+			var dbd = db.db("assignments")
+			if (err) throw err;
+	  		dbd.collection(id).find().toArray(function(err, a){
+	  			if(err) throw err;
+	  			db.close();
+	  			callback(a);
+	  		});
+		})
+	//})
+	
 }
 
-
-function getPreferences(id, callback){
+const getPreferences = function(id, callback){
 	MongoClient.connect(url, function(err, db){
 		var dbd = db.db("preferences")
 		if (err) throw err;
@@ -299,7 +315,7 @@ function getPreferences(id, callback){
 	})
 }
 
-function setPreferences(id, data){
+const setPreferences = function(id, data){
 	MongoClient.connect(url, function(err, db) {
 		var dbd = db.db("preferences")
 		if (err) throw err;
@@ -308,7 +324,7 @@ function setPreferences(id, data){
 	});
 }
 
-function addUser(data, callback){console.log(data)
+const addUser = function(data, callback){console.log(data)
 	if (data.email &&
 	  data.password) {
 	  var userData = {
@@ -479,6 +495,11 @@ app.post('/sign_in', function(req, res){ console.log('sign_in')
 			if(!(err || !user)){
 				console.log('sign in worked')
 				req.session.userId = user._id
+				determineOptimalTimes(user._id.toString(), function(a){
+					for(var i=0; i < a.length; i ++){
+						setAssignment(user._id.toString(), a[i])
+					}
+				})
 				res.redirect('/website/index.html')
 			}else{
 				res.redirect('/website/login.html')
@@ -512,7 +533,7 @@ var server = app.listen(8000, function () {
     console.log("Listening on port %s...", server.address().port);
 });
 
-function populateDatabase(){
+const populateDatabase = function(){
 	var today = new Date()
 	addUser({firstName: 'Arman', lastName: 'Aydemir', email: 'rr@rr.com', password:'woah', passwordConf:'woah'}, function(usr1_id){
 		addAssignment(usr1_id.toString(), {completed:false, due: today, repeating:'', description:'test assignments', title:'test title',
@@ -552,10 +573,7 @@ function populateDatabase(){
 //     });
 // }
 
-
-
-
-
+module.exports = { addUser, addEvent, addAssignment, getAssignments, getEvents }
 
 
 

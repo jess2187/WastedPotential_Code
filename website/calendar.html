@@ -350,10 +350,13 @@
                 if(d > current){
                   $("#dashboardAssignmentList").append("<li>" + result[i].title + "</li>")
                 }
+                console.log(result[i].worktime)
                 for(var w = result[i].worktime.length -1; w >= 0; w--){
-                  var worktime_data = result[i].worktime[w]
+                  var worktime_data = {'start': result[i].worktime[w].start_time, 'end': result[i].worktime[w].end_time}
                   worktime_data.title = result[i].title + " Scheduled Work Time"
-                  result.append(worktime_data)
+                  worktime_data.color = 'green'
+                  result.push(worktime_data)
+                  console.log(worktime_data)
                 }
               }
               $.ajax({url:"/events", success: function(events){
